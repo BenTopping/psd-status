@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-apscheduler = "*"
+flask-cors = "*"
+pymysql = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+python-dotenv = "*"
+requests = "*"
+
+[dev-packages]
+pytest = "*"
+black = "*"
+flake8 = "*"
+faker = "*"
+
+[requires]
+python_version = "3.9"
+
+[scripts]
+black = 'black'
+flake8 = 'flake8'
+test = 'python -m pytest -vx'
