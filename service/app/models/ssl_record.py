@@ -6,19 +6,20 @@ class SslRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     monitor_id = db.Column(db.Integer, db.ForeignKey('monitor.id'), nullable=False)
-    monitor = db.relationship("Monitor", backref="ssl_record")
     success = db.Column(db.Boolean, nullable=False)
+    authority = db.Column(db.String(128), nullable=False)
     expiry_date = db.Column(db.TIMESTAMP)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
-    def __init__(self, monitor_id, success, expiry_date):
+    def __init__(self, monitor_id, success, authority, expiry_date):
         self.monitor_id = monitor_id
         self.success = success
+        self.authority = authority
         self.expiry_date = expiry_date
 
     @staticmethod
-    def create(monitor_id, success, expiry_date): 
-        new_monitor = SslRecord(monitor_id, success, expiry_date)
+    def create(monitor_id, success, authority, expiry_date): 
+        new_monitor = SslRecord(monitor_id, success, authority, expiry_date)
         try:
             db.session.add(new_monitor)
             db.session.commit()

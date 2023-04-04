@@ -5,7 +5,8 @@ class Protocol(db.Model):
     __tablename__ = "protocol"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    monitors = db.relationship('Monitor', backref='protocol')
 
     def __init__(self, name):
         self.name = name

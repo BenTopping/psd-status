@@ -88,6 +88,7 @@ def insert_dummy_data():
                     SslRecord.create(
                         monitor.id,
                         True,
+                        "GenericAuthority",
                         fake.date_between(start_date, end_date)
                     )
 

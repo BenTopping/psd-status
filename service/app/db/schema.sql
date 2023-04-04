@@ -15,7 +15,7 @@ CREATE TABLE monitor (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   protocol_id INTEGER NOT NULL,/*FK*/
   delay INTEGER NOT NULL,
-  name VARCHAR(128) NOT NULL,
+  name VARCHAR(128) UNIQUE NOT NULL,
   target VARCHAR(128) NOT NULL,
   active BOOLEAN NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -27,6 +27,7 @@ CREATE TABLE ssl_record (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   monitor_id INTEGER NOT NULL,/*FK*/
   success BOOLEAN NOT NULL,
+  authority VARCHAR(128),
   expiry_date TIMESTAMP,
   created_at TIMESTAMP,
   CONSTRAINT FK_ssl_record_monitor FOREIGN KEY (monitor_id) REFERENCES monitor (id)

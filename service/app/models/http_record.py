@@ -6,7 +6,6 @@ class HttpRecord(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     monitor_id = db.Column(db.Integer, db.ForeignKey('monitor.id'), nullable=False)
-    monitor = db.relationship("Monitor", backref="http_record")
     response_time = db.Column(db.Integer, nullable=False)
     status_code = db.Column(db.Integer, nullable=False)
     errors = db.Column(db.String(128))

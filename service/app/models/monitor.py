@@ -6,7 +6,8 @@ class Monitor(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     protocol_id = db.Column(db.Integer, db.ForeignKey('protocol.id'), nullable=False)
-    protocol = db.relationship("Protocol", backref=db.backref("protocol"))
+    http_records = db.relationship("HttpRecord", backref="monitor")
+    ssl_records = db.relationship("SslRecord", backref="monitor")
     delay = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(128))
     target = db.Column(db.String(128))

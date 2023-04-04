@@ -1,0 +1,25 @@
+import requests
+from app.models.monitor import Monitor
+from app.models.http_record import HttpRecord
+
+# Given a monitor object make a get http request and record
+def get_http(monitor: Monitor):
+    url = f"https://{monitor.target}"
+    try:
+        r = requests.get(url)
+        response_time = r.elapsed.total_seconds()
+        status_code = r.status_code
+        errors = ""
+        r.raise_for_status()
+    except requests.exceptions.HTTPError as errh:
+        errors = "HTTP Error: " + errh
+    except requests.exceptions.ConnectionError as errc:
+        errors = "Connection Error: " + errc
+    except requests.exceptions.Timeout as errt:
+        errors = "Timeout Error: " + errt
+    except requests.exceptions.RequestException as err:
+        errors = "Request exception: " + err
+
+    http_record = HttpRecord(monitor.id, response_time, status_code, errors)
+
+    return http_record
