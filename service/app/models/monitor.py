@@ -1,4 +1,4 @@
-from app.models import db
+from app.extensions import db
 
 class Monitor(db.Model):
     __tablename__ = "monitor"

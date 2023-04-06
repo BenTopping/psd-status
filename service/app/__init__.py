@@ -1,17 +1,15 @@
 from flask import Flask
-from flask_apscheduler import APScheduler
-from flask_sqlalchemy import SQLAlchemy
 from app.routes import test
 from app.jobs.setup import setup_jobs
-from app.models import db
+from app.extensions import db, scheduler
 
-scheduler = APScheduler()
 
 def create_app():
     # create and configure the app
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:@localhost/psd_status"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
     # setup database
     db.init_app(app)
     # setup routes
@@ -27,4 +25,4 @@ def setup_routes(app):
 def setup_schedulers(app):
     scheduler.init_app(app)
     scheduler.start()
-    setup_jobs(scheduler)
+    setup_jobs()

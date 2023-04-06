@@ -20,6 +20,6 @@ def get_http(monitor: Monitor):
     except requests.exceptions.RequestException as err:
         errors = "Request exception: " + err
 
-    http_record = HttpRecord(monitor.id, response_time, status_code, errors)
+    http_record = HttpRecord.create(monitor.id, response_time, status_code, errors)
 
     return http_record

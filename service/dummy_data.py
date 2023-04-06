@@ -4,7 +4,7 @@ from app.models.protocol import Protocol
 from app.models.monitor import Monitor
 from app.models.http_record import HttpRecord
 from app.models.ssl_record import SslRecord
-from app.models import db
+from app.extensions import db
 import random
 import datetime
 from faker import Faker

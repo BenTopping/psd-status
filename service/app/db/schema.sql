@@ -36,7 +36,7 @@ CREATE TABLE ssl_record (
 CREATE TABLE http_record (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   monitor_id INTEGER NOT NULL,/*FK*/
-  response_time INTEGER,
+  response_time FLOAT,
   status_code INTEGER,
   errors VARCHAR(128),
   created_at TIMESTAMP NOT NULL,

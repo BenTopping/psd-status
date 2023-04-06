@@ -1,4 +1,4 @@
-from app.models import db
+from app.extensions import db
 
 class SslRecord(db.Model):
     __tablename__ = "ssl_record"
@@ -18,9 +18,9 @@ class SslRecord(db.Model):
 
     @staticmethod
     def create(monitor_id, success, authority, expiry_date): 
-        new_monitor = SslRecord(monitor_id, success, authority, expiry_date)
+        new_ssl_record = SslRecord(monitor_id, success, authority, expiry_date)
         try:
-            db.session.add(new_monitor)
+            db.session.add(new_ssl_record)
             db.session.commit()
         except Exception as e:
             db.session.rollback()
