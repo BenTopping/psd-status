@@ -1,6 +1,5 @@
 from app.models import db
 
-
 class Monitor(db.Model):
     __tablename__ = "monitor"
 

@@ -1,6 +1,5 @@
 from app.models import db
 
-
 class SslRecord(db.Model):
     __tablename__ = "ssl_record"
 

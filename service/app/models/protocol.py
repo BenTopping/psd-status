@@ -1,6 +1,5 @@
 from app.models import db
 
-
 class Protocol(db.Model):
     __tablename__ = "protocol"
 

@@ -1,6 +1,5 @@
 from app.models import db
 
-
 class HttpRecord(db.Model):
     __tablename__ = "http_record"
 
