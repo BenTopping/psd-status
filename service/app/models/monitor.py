@@ -30,6 +30,7 @@ class Monitor(db.Model):
         except Exception as e:
             db.session.rollback()
             print("! Error creating monitor: " + str(e))
+        return new_monitor
 
     def as_dict(self):
       return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}

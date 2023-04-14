@@ -14,3 +14,9 @@ def test_create_user(app):
         db_user = User.query.order_by(User.id.desc()).first()
         assert db_user.username == "testUsername"
         assert db_user.password == "testPassword"
+
+def test_user_as_dict():
+    user = User("testUsername", "testPassword").as_dict()
+
+    assert user["username"] == "testUsername"
+    assert user["password"] == "testPassword"

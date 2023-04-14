@@ -17,8 +17,8 @@ def get_ssl(monitor: Monitor):
         issuer = dict(x[0] for x in cert['issuer'])
         authority = issuer['commonName']
         expiry_date = datetime.datetime.strptime(cert['notAfter'], ssl_dateformat)
-        ssl_record = SslRecord(monitor.id, True, authority, expiry_date)
+        ssl_record = SslRecord.create(monitor.id, True, authority, expiry_date)
     else:
-        ssl_record = SslRecord(monitor.id, False, "", "")
+        ssl_record = SslRecord.create(monitor.id, False, "", "")
 
     return ssl_record
