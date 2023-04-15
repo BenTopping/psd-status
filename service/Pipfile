@@ -13,6 +13,8 @@ flask-sqlalchemy = "*"
 python-dotenv = "*"
 requests = "*"
 responses = "*"
+pyjwt = "*"
+cryptography = "*"
 
 [dev-packages]
 pytest = "*"

@@ -1,10 +1,11 @@
 from app.extensions import db
 
+
 class SslRecord(db.Model):
     __tablename__ = "ssl_record"
 
     id = db.Column(db.Integer, primary_key=True)
-    monitor_id = db.Column(db.Integer, db.ForeignKey('monitor.id'), nullable=False)
+    monitor_id = db.Column(db.Integer, db.ForeignKey("monitor.id"), nullable=False)
     success = db.Column(db.Boolean, nullable=False)
     authority = db.Column(db.String(128), nullable=False)
     expiry_date = db.Column(db.TIMESTAMP)
@@ -17,7 +18,7 @@ class SslRecord(db.Model):
         self.expiry_date = expiry_date
 
     @staticmethod
-    def create(monitor_id, success, authority, expiry_date): 
+    def create(monitor_id, success, authority, expiry_date):
         new_ssl_record = SslRecord(monitor_id, success, authority, expiry_date)
         try:
             db.session.add(new_ssl_record)
@@ -28,6 +29,4 @@ class SslRecord(db.Model):
         return new_ssl_record
 
     def as_dict(self):
-      return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
-
-
+        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}

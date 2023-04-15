@@ -3,7 +3,7 @@ CREATE DATABASE psd_status;
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(128) UNIQUE NOT NULL,
-  password VARCHAR(128) NOT NULL
+  password VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE protocol (
@@ -36,6 +36,7 @@ CREATE TABLE ssl_record (
 CREATE TABLE http_record (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   monitor_id INTEGER NOT NULL,/*FK*/
+  success BOOLEAN NOT NULL,
   response_time FLOAT,
   status_code INTEGER,
   errors VARCHAR(128),

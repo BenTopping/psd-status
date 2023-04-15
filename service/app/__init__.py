@@ -1,8 +1,9 @@
 from flask import Flask
-from app.routes import test
+from app.routes import test, authentication
 from app.jobs.setup import setup_jobs
 from app.extensions import db, scheduler
 from app.config import Config
+
 
 def create_app(config_class=Config):
     # create and configure the app
@@ -19,8 +20,11 @@ def create_app(config_class=Config):
 
     return app
 
+
 def setup_routes(app):
     app.register_blueprint(test.bp)
+    app.register_blueprint(authentication.bp)
+
 
 def setup_schedulers(app):
     scheduler.init_app(app)

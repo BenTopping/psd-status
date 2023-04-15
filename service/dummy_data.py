@@ -4,21 +4,27 @@ from app.models.protocol import Protocol
 from app.models.monitor import Monitor
 from app.models.http_record import HttpRecord
 from app.models.ssl_record import SslRecord
-from app.extensions import db
+from app.config import Config
+from faker import Faker
 import random
 import datetime
-from faker import Faker
 
 # A script to generate dummy data for development purposes
 fake = Faker()
 
+
+class DummyConfig(Config):
+    TESTING = True
+    SCHEDULER_RUN = False
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/psd_status"
+
+
 def insert_dummy_data():
-    app = create_app()
+    app = create_app(config_class=DummyConfig)
     with app.app_context():
         # Generate users
         print("-> Generating users")
         User.create("admin", "admin")
-
 
         # Generate protocols
         print("-> Generating protocols")
@@ -31,42 +37,42 @@ def insert_dummy_data():
         http_protocol = Protocol.query.filter(Protocol.name == "http").first()
         ssl_protocol = Protocol.query.filter(Protocol.name == "ssl").first()
         delays = [60, 120, 300, 600, 1800, 86400, 604800]
-        ## Create http monitors using known web addresses
+        # Create http monitors using known web addresses
         Monitor.create(
             protocol_id=http_protocol.id,
             delay=random.choice(delays),
             name="Google",
             target="google.com",
-            active=True
+            active=True,
         )
         Monitor.create(
             protocol_id=http_protocol.id,
             delay=random.choice(delays),
             name="Bing",
             target="bing.com",
-            active=True
+            active=True,
         )
         Monitor.create(
             protocol_id=http_protocol.id,
             delay=random.choice(delays),
             name="Ecosia",
             target="ecosia.com",
-            active=True
+            active=True,
         )
-        ## Create ssl monitors
+        # Create ssl monitors
         Monitor.create(
             protocol_id=ssl_protocol.id,
             delay=delays[5],
             name="Apple",
             target="apple.com",
-            active=True
+            active=True,
         )
         Monitor.create(
             protocol_id=ssl_protocol.id,
             delay=delays[6],
             name="Microsoft",
             target="microsoft.com",
-            active=True
+            active=True,
         )
 
         # Generate http_records
@@ -77,9 +83,10 @@ def insert_dummy_data():
                 for _ in range(100):
                     HttpRecord.create(
                         monitor.id,
+                        True,
                         random.randint(50, 1000),
                         random.choice([200, 201, 404, 500]),
-                        fake.pystr()
+                        fake.pystr(),
                     )
             if monitor.protocol == ssl_protocol:
                 start_date = datetime.datetime.now()
@@ -89,8 +96,9 @@ def insert_dummy_data():
                         monitor.id,
                         True,
                         "GenericAuthority",
-                        fake.date_between(start_date, end_date)
+                        fake.date_between(start_date, end_date),
                     )
+
 
 if __name__ == "__main__":
     insert_dummy_data()
