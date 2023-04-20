@@ -19,6 +19,14 @@ const routes = [
     {
         path: '/login',
         component: Login,
+        beforeEnter(to, from, next) {
+            const store = useAuthenticationStore()
+            if (store.isAuthenticated) {
+                next('/')
+            } else {
+                next()
+            }
+        }
     }
 ]
 

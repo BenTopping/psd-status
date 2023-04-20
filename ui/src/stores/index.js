@@ -21,6 +21,12 @@ export const useAuthenticationStore = defineStore('authentication', () => {
             })
     }
 
+    function logout() {
+        user.value = {}
+        jwt.value = ''
+        localStorage.token = ''
+    }
+
     const isAuthenticated = computed(() => {
         if (localStorage.token) {
             jwt.value = localStorage.token
@@ -28,5 +34,5 @@ export const useAuthenticationStore = defineStore('authentication', () => {
         return isValidJwt(jwt.value)
     })
 
-    return { user, jwt, login, isAuthenticated }
+    return { user, jwt, login, logout, isAuthenticated }
 })

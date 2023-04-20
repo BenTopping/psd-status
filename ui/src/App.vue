@@ -1,11 +1,13 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import Navbar from './components/Navbar.vue'
 </script>
 
 <template>
-  <section>
-    <router-view />
-  </section>
+  <div class="flex flex-col min-h-screen bg-gray-100">
+      <navbar/>
+      <router-view />
+  </div>
 </template>
 
 <style scoped>

@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sanger/ui-styling": "^4.0.0",
     "axios": "^1.3.5",
     "buffer": "^6.0.3",
     "dotenv": "^16.0.3",
