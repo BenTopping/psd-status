@@ -1,5 +1,5 @@
 <script setup>
-    import { useAuthenticationStore } from '../stores/index.js'
+    import { useAuthenticationStore } from '../stores/authStore.js'
     import { ref } from 'vue'
     import { useRouter } from 'vue-router'
 
@@ -20,7 +20,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col rounded-lg bg-white mx-auto my-auto items-center w-96 h-96">
+    <div class="flex flex-col rounded-lg bg-white mx-auto my-auto items-center w-96 h-96">
         <div class="flex bg-sdb-400 font-bold text-white rounded-t-lg py-5 w-full">
             <h1 class="mx-auto text-2xl">PSD Status</h1>
         </div>
@@ -37,5 +37,5 @@
         <div>
             <button class="mx-auto mt-5 w-32 bg-sdb-400 p-2 text-white rounded-lg text-base" @click="login()">Login</button>
         </div>
-  </div>
+    </div>
 </template>

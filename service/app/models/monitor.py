@@ -1,4 +1,5 @@
 from app.extensions import db
+from app.models.http_record import HttpRecord
 
 
 class Monitor(db.Model):
@@ -37,3 +38,29 @@ class Monitor(db.Model):
 
     def as_dict(self):
         return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+    
+    def average_uptime_percentage(self):
+        if len(self.http_records) > 0:
+            success_records = len(list(filter(lambda http_record: http_record.success == True, self.http_records)))
+            total_records = len(self.http_records)
+
+            return (
+                100.0 * success_records / total_records
+            )
+        else:
+            return 0
+    
+    def current_state(self):
+        if len(self.http_records) > 0:
+            last_records = list(map(lambda x: x.as_dict(), self.http_records))[-10:]
+            # Check if most recent http_record is successful
+            if last_records[0]['success'] == False:
+                return 'red'
+            # Check if any of the last 10 records were unsuccesful
+            elif True in (record['success'] == False for record in last_records):
+                return 'yellow'
+            else:
+            # Return green if all is good
+                return 'green'
+        else:
+            return 'red'

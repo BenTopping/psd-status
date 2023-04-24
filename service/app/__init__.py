@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from app.routes import test, authentication
+from app.routes import test, authentication, monitors
 from app.jobs.setup import setup_jobs
 from app.extensions import db, scheduler
 from app.config import Config
@@ -26,6 +26,7 @@ def create_app(config_class=Config):
 def setup_routes(app):
     app.register_blueprint(test.bp)
     app.register_blueprint(authentication.bp)
+    app.register_blueprint(monitors.bp)
 
 
 def setup_schedulers(app):

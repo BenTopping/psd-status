@@ -1,12 +1,12 @@
 <script setup>
-  import { useAuthenticationStore } from '../stores/index.js'
+  import { useAuthenticationStore } from '../stores/authStore.js'
   const store = useAuthenticationStore()
 </script>
 
 <template>
   <div class="relative bg-sdb-400">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
-        <div class="flex flex-row text-white py-4 justify-between">
+        <div class="flex flex-row text-white py-5 justify-between">
           <div class="flex gap-x-5">
             <router-link to="/">Home</router-link>
           </div>
