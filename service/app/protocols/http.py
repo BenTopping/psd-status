@@ -1,11 +1,16 @@
 import requests
 from app.models.monitor import Monitor
+from app.models.protocol import Protocol
 from app.models.http_record import HttpRecord
 
 
 # Given a monitor object make a get http request and record
+# Ensure that the monitor protocol is joined before running
 def get_http(monitor: Monitor):
-    url = f"https://{monitor.target}"
+    if monitor.protocol.name not in ["http", "https"]:
+        return { 'errors': "Invalid protocol" }
+
+    url = f"{monitor.protocol.name}://{monitor.target}"
     success = False
     response_time = None
     status_code = None

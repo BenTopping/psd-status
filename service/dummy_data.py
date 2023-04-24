@@ -29,14 +29,15 @@ def insert_dummy_data():
         # Generate protocols
         print("-> Generating protocols")
         Protocol.create("http")
-        Protocol.create("ssl")
+        Protocol.create("https")
 
         # Generate monitors
         # Would be nice to randomise the creation of these more thoroughly
         print("-> Generating monitors")
         http_protocol = Protocol.query.filter(Protocol.name == "http").first()
-        ssl_protocol = Protocol.query.filter(Protocol.name == "ssl").first()
-        delays = [60, 120, 300, 600, 1800, 86400, 604800]
+        https_protocol = Protocol.query.filter(Protocol.name == "https").first()
+        delays = [60, 120, 300, 600]
+        # [60, 120, 300, 600, 1800, 86400, 604800]
         # Create http monitors using known web addresses
         Monitor.create(
             protocol_id=http_protocol.id,
@@ -61,15 +62,15 @@ def insert_dummy_data():
         )
         # Create ssl monitors
         Monitor.create(
-            protocol_id=ssl_protocol.id,
-            delay=delays[5],
+            protocol_id=https_protocol.id,
+            delay=random.choice(delays),
             name="Apple",
             target="apple.com",
             active=True,
         )
         Monitor.create(
-            protocol_id=ssl_protocol.id,
-            delay=delays[6],
+            protocol_id=https_protocol.id,
+            delay=random.choice(delays),
             name="Microsoft",
             target="microsoft.com",
             active=True,
@@ -79,16 +80,16 @@ def insert_dummy_data():
         monitors = Monitor.query.all()
         print("-> Generating http and ssl records")
         for monitor in monitors:
-            if monitor.protocol == http_protocol:
+            if monitor.protocol == http_protocol or monitor.protocol == https_protocol:
                 for _ in range(100):
                     HttpRecord.create(
                         monitor.id,
                         True,
-                        random.randint(50, 1000),
+                        random.randint(1, 100) / 100,
                         random.choice([200, 201, 404, 500]),
                         fake.pystr(),
                     )
-            if monitor.protocol == ssl_protocol:
+            if monitor.protocol == https_protocol:
                 start_date = datetime.datetime.now()
                 end_date = datetime.datetime.now() + datetime.timedelta(days=365)
                 for _ in range(5):
