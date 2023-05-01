@@ -15,6 +15,8 @@ def monitors():
 def monitor_dict(monitor: Monitor):
     monitor_dict = monitor.as_dict()
     monitor_dict['http_records'] = list(map(lambda x: x.as_dict(), monitor.http_records))[-10:]
+    if len(monitor.ssl_records) > 0:
+        monitor_dict['ssl_expiry_date'] = monitor.ssl_records[-1].expiry_date
     monitor_dict['average_uptime'] = monitor.average_uptime_percentage()
     monitor_dict['current_state'] = monitor.current_state()
     return monitor_dict
