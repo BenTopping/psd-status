@@ -27,7 +27,7 @@ async function fetchMonitors() {
       lastUpdated.value = new Date().toLocaleString();
     })
     .catch((error) => {
-      console.log("Error Authenticating: ", error);
+      console.log("Error retrieving monitors: ", error);
     });
 }
 
@@ -80,5 +80,3 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
-
-<style scoped></style>
