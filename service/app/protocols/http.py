@@ -22,14 +22,15 @@ def get_http(monitor: Monitor):
         status_code = r.status_code
         r.raise_for_status()
         success = True
+    # Would be nice to records the errors in a better way    
     except requests.exceptions.HTTPError as errh:
-        errors = "HTTP Error: " + str(errh)
+        errors = "HTTP Error" # + str(errh)
     except requests.exceptions.ConnectionError as errc:
-        errors = "Connection Error: " + str(errc)
+        errors = "Connection Error" # + str(errc)
     except requests.exceptions.Timeout as errt:
-        errors = "Timeout Error: " + str(errt)
+        errors = "Timeout Error" # + str(errt)
     except requests.exceptions.RequestException as err:
-        errors = "Request exception: " + str(err)
+        errors = "Request exception" # + str(err)
 
     http_record = HttpRecord.create(
         monitor.id, success, response_time, status_code, errors

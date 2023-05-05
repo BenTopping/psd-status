@@ -35,20 +35,21 @@ onMounted(() => {
       </div>
       <div class="flex flex-col mx-auto">
         <div v-for="monitor in monitors" :key="monitor.id" @click="currentMonitor = monitor">
-          <div class="flex flex-row w-96 h-32 items-center my-2 bg-white rounded-md drop-shadow-md">
-            <span class="flex text-xl p-2 text-center font-bold">
-              {{ monitor.name }}
-            </span>
-            <div class="flex flex-col p-3 w-full">
+          <div class="flex flex-row w-96 h-32 my-2 bg-white rounded-md drop-shadow-md">
+            <div class="flex w-1/3 bg-sdb-400 items-center rounded-l-md text-center">
+                <span class="flex text-xl text-center text-white p-2 text-center font-bold bg-sdb-400">
+                    {{ monitor.name }}
+                </span>
+            </div>
+            <div class="flex flex-col p-3 w-2/3 justify-center">
               <span class="flex text-xl mx-auto space-x-5">
                 <p class="font-light">Target:</p>
                 <p>{{ monitor.target }}</p>
               </span>
               <span class="flex text-xl mx-auto space-x-5">
                 <p class="font-light">Protocol:</p>
-                <p>{{ monitor.protocol }}</p>
+                <p>{{ monitor.protocol_name }}</p>
               </span>
-              <span class="flex text-xl mx-auto">{{ monitor.protocol }}</span>
             </div>
           </div>
         </div>

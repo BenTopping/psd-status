@@ -9,7 +9,7 @@ class HttpRecord(db.Model):
     success = db.Column(db.Boolean, nullable=False)
     response_time = db.Column(db.Float)
     status_code = db.Column(db.Integer)
-    errors = db.Column(db.String(128))
+    errors = db.Column(db.String(1024))
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
 
     def __init__(self, monitor_id, success, response_time, status_code, errors):

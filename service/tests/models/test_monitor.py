@@ -43,6 +43,8 @@ def test_monitor_as_dict():
     assert monitor["name"] == "Monitor1"
     assert monitor["target"] == "www.test.com"
     assert monitor["active"] == "True"
+    assert monitor["current_state"] == "red"
+    assert monitor["average_uptime"] == "0"
 
 
 def test_monitor_http_records(app):

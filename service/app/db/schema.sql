@@ -39,7 +39,7 @@ CREATE TABLE http_record (
   success BOOLEAN NOT NULL,
   response_time FLOAT,
   status_code INTEGER,
-  errors VARCHAR(128),
+  errors VARCHAR(1024),
   created_at TIMESTAMP NOT NULL,
   CONSTRAINT FK_http_record_monitor FOREIGN KEY (monitor_id) REFERENCES monitor (id)
 );

@@ -37,18 +37,29 @@ class Monitor(db.Model):
         return new_monitor
 
     def as_dict(self):
-        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+        return {
+            "id": str(self.id),
+            "protocol_id": str(self.protocol_id),
+            "delay": str(self.delay),
+            "name": str(self.name),
+            "target": str(self.target),
+            "active": str(self.active),
+            "created_at": str(self.created_at),
+            "updated_at": str(self.updated_at),
+            "average_uptime": self.average_uptime_percentage(),
+            "current_state": self.current_state()
+        }
     
     def average_uptime_percentage(self):
         if len(self.http_records) > 0:
             success_records = len(list(filter(lambda http_record: http_record.success == True, self.http_records)))
             total_records = len(self.http_records)
 
-            return (
+            return str(
                 100.0 * success_records / total_records
             )
         else:
-            return 0
+            return '0'
     
     def current_state(self):
         if len(self.http_records) > 0:
