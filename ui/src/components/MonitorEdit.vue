@@ -1,17 +1,31 @@
 <script setup>
 import { ref, computed, watchEffect } from "vue";
-import { createMonitor } from '../api'
+import { useAuthenticationStore } from "../stores/authStore.js";
+import { createMonitor } from "../api";
 
+const store = useAuthenticationStore();
 const props = defineProps({
-  monitor: {},
+  monitor: Object,
+  protocols: Array
 });
+
+const emit = defineEmits(['fetchMonitors'])
 
 // This clones the monitor prop whilst also updating if the prop changes
 const currentMonitor = ref();
 watchEffect(() => (currentMonitor.value = { ...props.monitor }));
 
 async function createOrUpdateMonitor() {
-    console.log('creating monitor')
+  const response = await createMonitor(currentMonitor.value, store.jwt)
+    .then((response) => {
+      console.log(response);
+      emit('fetchMonitors')
+      return response;
+    })
+    .catch((error) => {
+      console.log("Error Authenticating: ", error);
+      return { success: false, error: error };
+    });
 }
 </script>
 
@@ -20,22 +34,45 @@ async function createOrUpdateMonitor() {
     class="flex flex-col w-full max-w-[800px] mt-2 rounded-lg drop-shadow-md bg-white"
   >
     <div class="flex bg-sdb-400 font-bold text-white rounded-t-lg py-5 w-full">
-        <h1 class="mx-auto text-2xl">{{ currentMonitor.name || "New" }}</h1>
+      <h1 class="mx-auto text-2xl">{{ monitor.name || "New" }}</h1>
     </div>
-    <form class="flex flex-col p-5 w-full gap-y-3" @submit.prevent="createOrUpdateMonitor()">
+    <form
+      class="flex flex-col p-5 w-full gap-y-3"
+      @submit.prevent="createOrUpdateMonitor()"
+    >
+      <div v-if="!monitor.name" class="flex flex-col">
+        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+          >Name</label
+        >
+        <input
+          class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
+          placeholder="Name"
+          v-model="currentMonitor.name"
+          required
+        />
+      </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold">Protocol</label>
+        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+          >Protocol</label
+        >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
-          v-model="currentMonitor.protocol_name"
+          v-model="currentMonitor.protocol_id"
           required
         >
-          <option value="http">http</option>
-          <option value="https">https</option>
+          <option 
+            v-for="protocol in protocols"
+            :key="protocol.id"
+            :value="protocol.id"
+          >
+            {{ protocol.name }}
+          </option>
         </select>
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold">Target</label>
+        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+          >Target</label
+        >
         <input
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           placeholder="www.test.com"
@@ -44,7 +81,9 @@ async function createOrUpdateMonitor() {
         />
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold">Poll delay</label>
+        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+          >Poll delay</label
+        >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           v-model="currentMonitor.delay"
@@ -60,14 +99,16 @@ async function createOrUpdateMonitor() {
         </select>
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold">Active?</label>
+        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+          >Active?</label
+        >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           v-model="currentMonitor.active"
           required
         >
-          <option value="True">True</option>
-          <option value="False">False</option>
+          <option :value="true">True</option>
+          <option :value="false">False</option>
         </select>
       </div>
       <button

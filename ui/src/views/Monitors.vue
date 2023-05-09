@@ -1,10 +1,15 @@
 <script setup>
-import { getMonitors } from "../api/index.js";
+import { getMonitors, getProtocols } from "../api/index.js";
 import { ref, onMounted } from "vue";
 import MonitorEdit from "../components/MonitorEdit.vue";
 
 let monitors = ref([]);
+let protocols = ref([]);
 let currentMonitor = ref({})
+
+function getProtocolName(protocol_id) {
+    return protocols.value.find((protocol) => protocol.id == protocol_id)?.name || "Unknown"
+}
 
 async function fetchMonitors() {
   await getMonitors()
@@ -16,8 +21,19 @@ async function fetchMonitors() {
     });
 }
 
-onMounted(() => {
-  fetchMonitors();
+async function fetchProtocols() {
+  await getProtocols()
+    .then((response) => {
+      protocols.value = response.data;
+    })
+    .catch((error) => {
+      console.log("Error retrieving protocols: ", error);
+    });
+}
+
+onMounted(async () => {
+    await fetchProtocols();
+    fetchMonitors();
 });
 </script>
 
@@ -48,7 +64,7 @@ onMounted(() => {
               </span>
               <span class="flex text-xl mx-auto space-x-5">
                 <p class="font-light">Protocol:</p>
-                <p>{{ monitor.protocol_name }}</p>
+                <p>{{ getProtocolName(monitor.protocol_id) }}</p>
               </span>
             </div>
           </div>
@@ -59,7 +75,7 @@ onMounted(() => {
       <div class="flex border-b-2 border-gray-200">
         <p class="w-full text-xl text-white font-bold py-3">{{ currentMonitor.name || 'New' }}</p>
       </div>
-      <MonitorEdit :monitor="currentMonitor"/>
+      <MonitorEdit :monitor="currentMonitor" :protocols="protocols" @fetch-monitors="fetchMonitors"/>
     </div>
   </div>
 </template>

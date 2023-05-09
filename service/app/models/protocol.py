@@ -23,4 +23,7 @@ class Protocol(db.Model):
         return new_protocol
 
     def as_dict(self):
-        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+        return {
+            "id": self.id,
+            "name": self.name
+        }

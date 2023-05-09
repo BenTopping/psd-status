@@ -43,7 +43,7 @@ class Monitor(db.Model):
             "delay": str(self.delay),
             "name": str(self.name),
             "target": str(self.target),
-            "active": str(self.active),
+            "active": self.active,
             "created_at": str(self.created_at),
             "updated_at": str(self.updated_at),
             "average_uptime": self.average_uptime_percentage(),

@@ -8,6 +8,10 @@ export function getMonitors () {
     return axios.get(`${import.meta.env.VITE_PSD_STATUS_BASE_URL}/monitors`)
 }
 
-export function createMonitor (monitorData) {
-    return axios.post(`${import.meta.env.VITE_PSD_STATUS_BASE_URL}/monitor`, monitorData)
+export function getProtocols () {
+    return axios.get(`${import.meta.env.VITE_PSD_STATUS_BASE_URL}/protocols`)
+}
+
+export function createMonitor (monitorData, jwt) {
+    return axios.post(`${import.meta.env.VITE_PSD_STATUS_BASE_URL}/monitor`, monitorData, { headers: { Authorization: `Bearer: ${jwt}` } })
 }
