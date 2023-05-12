@@ -7,5 +7,6 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:5173/',
     specPattern: 'cypress/specs/*.cy.{js,jsx,ts,tsx}',
+    video:false
   },
 });

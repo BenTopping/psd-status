@@ -8,15 +8,15 @@ let lastUpdated = ref(new Date().toLocaleString());
 let pollInterval = null
 
 const numOfRedSystems = computed(() => {
-  return monitors.value.filter((monitor) => monitor.current_state == "red")
+  return monitors.value?.filter((monitor) => monitor.current_state == "red")
     .length;
 });
 const numOfGreenSystems = computed(() => {
-  return monitors.value.filter((monitor) => monitor.current_state == "green")
+  return monitors.value?.filter((monitor) => monitor.current_state == "green")
     .length;
 });
 const numOfYellowSystems = computed(() => {
-  return monitors.value.filter((monitor) => monitor.current_state == "yellow")
+  return monitors.value?.filter((monitor) => monitor.current_state == "yellow")
     .length;
 });
 
