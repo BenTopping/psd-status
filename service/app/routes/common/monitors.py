@@ -7,25 +7,25 @@ def handle_monitor(monitor):
         monitor = format_monitor(monitor)
     except Exception as e:
         print(e)
-        return {"message": "Invalid data"}, 400
+        return { "data" : {"message": "Invalid data"}, "status_code": 400}
 
     if 'id' not in monitor:
         try:
             monitor = Monitor.create(**monitor)
-            return monitor.as_dict(), 200
+            return { "data": monitor.as_dict(), "status_code": 200 }
         except Exception as e:
             print(e)
-            return {"message": "Invalid data"}, 400
+            return { "data": {"message": "Invalid data"}, "status_code": 400}
     else:
         try:
             db_monitor = Monitor.query.filter_by(id=monitor['id']).first()
             if db_monitor is not None:
                 Monitor.query.filter_by(id=monitor['id']).update(monitor)
                 db.session.commit()
-            return db_monitor.as_dict(), 200
+            return { "data": db_monitor.as_dict(), "status_code": 200 }
         except Exception as e:
             print(e)
-            return {"message": "Invalid data"}, 400
+            return { "data" : {"message": "Invalid data"}, "status_code": 400}
 
 def format_monitor(monitor):
     try:

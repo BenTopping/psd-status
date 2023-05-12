@@ -56,7 +56,7 @@ class Monitor(db.Model):
             total_records = len(self.http_records)
 
             return str(
-                100.0 * success_records / total_records
+                round(100.0 * success_records / total_records, 2)
             )
         else:
             return '0'

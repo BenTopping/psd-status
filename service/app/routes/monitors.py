@@ -15,12 +15,12 @@ def monitors():
     return jsonify(monitors_dict_records)
 
 @bp.post("/monitor")
-# @token_required
-def create_monitor():
+@token_required
+def create_monitor(current_user):
     data = request.get_json()
     result = handle_monitor(data)
 
-    return jsonify(result[0]), result[1]
+    return jsonify(result['data']), result['status_code']
 
 @bp.get("/protocols")
 def protocols():

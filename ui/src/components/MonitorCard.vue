@@ -1,13 +1,6 @@
 <script setup>
-import { computed } from "vue";
-
-const props = defineProps({
+defineProps({
   monitor: Object,
-});
-const statusColour = computed(() => {
-  return props.monitor
-    ? `bg-${props.monitor.current_state}-400`
-    : "bg-gray-400";
 });
 </script>
 
@@ -24,7 +17,7 @@ const statusColour = computed(() => {
     <div class="flex flex-row w-full space-x-5">
       <div class="flex">
         <span
-          :class="`w-40 h-40 rounded-full drop-shadow-md ${statusColour}`"
+          :class="`w-40 h-40 rounded-full drop-shadow-md bg-${monitor.current_state}-400`"
         ></span>
       </div>
       <div class="flex flex-col justify-center font-sm">

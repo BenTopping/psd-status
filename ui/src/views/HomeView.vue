@@ -20,10 +20,30 @@ const numOfYellowSystems = computed(() => {
     .length;
 });
 
+function formatMonitors(monitorData) {
+  return monitorData.map((monitor) => {
+    if (monitor.http_records.length > 0) {
+      if (monitor.http_records[monitor.http_records.length-1].success == false) {
+        // Get last record and check if it failed
+        monitor.current_state = 'red'
+      } else if (monitor.http_records.some((record) => record.success == false)) {
+        // Check if any of the records are failed
+        monitor.current_state = 'yellow'
+      } else {
+        monitor.current_state = 'green'
+      }
+    } else {
+      // If there are no records show gray
+      monitor.current_state = 'gray'
+    }
+    return monitor
+  })
+}
+
 async function fetchMonitors() {
   await getMonitors()
     .then((response) => {
-      monitors.value = response.data;
+      monitors.value = formatMonitors(response.data);
       lastUpdated.value = new Date().toLocaleString();
     })
     .catch((error) => {
