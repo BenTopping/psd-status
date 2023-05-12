@@ -56,15 +56,15 @@ onUnmounted(() => {
       <div
         class="flex flex-row space-x-4 mx-auto bg-white px-10 w-auto h-12 rounded-full items-center drop-shadow-md"
       >
-        <div class="flex items-center gap-x-2">
+        <div class="flex items-center gap-x-2" data-attribute="green-systems">
           <span class="h-10 w-10 rounded-full bg-green-400"></span>
           <p>{{ numOfGreenSystems }} systems</p>
         </div>
-        <div class="flex items-center gap-x-2">
+        <div class="flex items-center gap-x-2" data-attribute="yellow-systems">
           <span class="h-10 w-10 rounded-full bg-yellow-400"></span>
           <p>{{ numOfYellowSystems }} systems</p>
         </div>
-        <div class="flex items-center gap-x-2">
+        <div class="flex items-center gap-x-2" data-attribute="red-systems">
           <span class="h-10 w-10 rounded-full bg-red-400"></span>
           <p>{{ numOfRedSystems }} systems</p>
         </div>

@@ -46,6 +46,7 @@ onMounted(() => {
                 id="menu-button"
                 aria-expanded="true"
                 aria-haspopup="true"
+                data-action="show-admin-dropdown"
                 @click.stop="dropdown.toggle()"
               >
                 Admin

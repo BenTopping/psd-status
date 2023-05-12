@@ -45,13 +45,17 @@ onMounted(async () => {
         <button
           class="mx-auto w-16 bg-sdb-400 p-2 my-2 text-white rounded-lg text-base"
           @click="currentMonitor = {}"
+          data-action="select-new-monitor"
         >
           New
         </button>
       </div>
       <div class="flex flex-col mx-auto">
         <div v-for="monitor in monitors" :key="monitor.id" @click="currentMonitor = monitor">
-          <div class="flex flex-row w-96 h-32 my-2 bg-white rounded-md drop-shadow-md">
+          <div 
+            class="flex flex-row w-96 h-32 my-2 bg-white rounded-md drop-shadow-md"
+            data-attribute="monitor-item"
+          >
             <div class="flex w-1/3 bg-sdb-400 items-center rounded-l-md text-center">
                 <span class="flex text-xl text-center text-white p-2 text-center font-bold bg-sdb-400">
                     {{ monitor.name }}

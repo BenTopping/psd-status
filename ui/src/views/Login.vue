@@ -33,6 +33,7 @@ async function login() {
           class="border-2 border-gray-300 rounded-lg p-2 text-base"
           placeholder="Username"
           v-model="username"
+          data-attribute="username-input"
           required
         />
       </div>
@@ -43,12 +44,14 @@ async function login() {
           placeholder="Password"
           type="password"
           v-model="password"
+          data-attribute="password-input"
           required
         />
       </div>
       <button
         class="mx-auto mt-5 w-32 bg-sdb-400 p-2 text-white rounded-lg text-base"
         type="submit"
+        data-action="login"
       >
         Login
       </button>

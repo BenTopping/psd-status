@@ -32,6 +32,7 @@ async function createOrUpdateMonitor() {
 <template>
   <div
     class="flex flex-col w-full max-w-[800px] mt-2 rounded-lg drop-shadow-md bg-white"
+    data-attribute="monitor-edit"
   >
     <div class="flex bg-sdb-400 font-bold text-white rounded-t-lg py-5 w-full">
       <h1 class="mx-auto text-2xl">{{ monitor.name || "New" }}</h1>
@@ -48,6 +49,7 @@ async function createOrUpdateMonitor() {
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           placeholder="Name"
           v-model="currentMonitor.name"
+          data-attribute="name-input"
           required
         />
       </div>
@@ -58,6 +60,7 @@ async function createOrUpdateMonitor() {
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           v-model="currentMonitor.protocol_id"
+          data-attribute="protocol-select"
           required
         >
           <option 
@@ -77,6 +80,7 @@ async function createOrUpdateMonitor() {
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           placeholder="www.test.com"
           v-model="currentMonitor.target"
+          data-attribute="target-input"
           required
         />
       </div>
@@ -87,6 +91,7 @@ async function createOrUpdateMonitor() {
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           v-model="currentMonitor.delay"
+          data-attribute="delay-select"
           required
         >
           <option value="60">1m</option>
@@ -105,6 +110,7 @@ async function createOrUpdateMonitor() {
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
           v-model="currentMonitor.active"
+          data-attribute="active-select"
           required
         >
           <option :value="true">True</option>
@@ -114,6 +120,7 @@ async function createOrUpdateMonitor() {
       <button
         class="mx-auto w-32 bg-sdb-400 p-2 my-2 text-white rounded-lg text-base"
         type="submit"
+        data-action="submit-monitor"
       >
         {{ currentMonitor.id ? "Update" : "Create" }}
       </button>
