@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const defaultOptions = require('@sanger/ui-styling/tailwind.config.js')
+const defaultOptions = require("@sanger/ui-styling/tailwind.config.js");
 
 export default {
   ...defaultOptions,
@@ -14,5 +14,4 @@ export default {
     extend: {},
   },
   plugins: [],
-}
-
+};

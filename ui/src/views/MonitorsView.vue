@@ -3,12 +3,15 @@ import { getMonitors, getProtocols } from "../api/index.js";
 import { ref, onMounted } from "vue";
 import MonitorEdit from "../components/MonitorEdit.vue";
 
-let monitors = ref([]);
-let protocols = ref([]);
-let currentMonitor = ref({})
+const monitors = ref([]);
+const protocols = ref([]);
+const currentMonitor = ref({});
 
 function getProtocolName(protocol_id) {
-    return protocols.value.find((protocol) => protocol.id == protocol_id)?.name || "Unknown"
+  return (
+    protocols.value.find((protocol) => protocol.id == protocol_id)?.name ||
+    "Unknown"
+  );
 }
 
 async function fetchMonitors() {
@@ -32,8 +35,8 @@ async function fetchProtocols() {
 }
 
 onMounted(async () => {
-    await fetchProtocols();
-    fetchMonitors();
+  await fetchProtocols();
+  fetchMonitors();
 });
 </script>
 
@@ -51,15 +54,23 @@ onMounted(async () => {
         </button>
       </div>
       <div class="flex flex-col mx-auto">
-        <div v-for="monitor in monitors" :key="monitor.id" @click="currentMonitor = monitor">
-          <div 
+        <div
+          v-for="monitor in monitors"
+          :key="monitor.id"
+          @click="currentMonitor = monitor"
+        >
+          <div
             class="flex flex-row w-96 h-32 my-2 bg-white rounded-md drop-shadow-md"
             data-attribute="monitor-item"
           >
-            <div class="flex w-1/3 bg-sdb-400 items-center rounded-l-md text-center">
-                <span class="flex text-xl text-center text-white p-2 text-center font-bold bg-sdb-400">
-                    {{ monitor.name }}
-                </span>
+            <div
+              class="flex w-1/3 bg-sdb-400 items-center rounded-l-md text-center"
+            >
+              <span
+                class="flex text-xl text-center text-white p-2 text-center font-bold bg-sdb-400"
+              >
+                {{ monitor.name }}
+              </span>
             </div>
             <div class="flex flex-col p-3 w-2/3 justify-center">
               <span class="flex text-xl mx-auto space-x-5">
@@ -77,9 +88,15 @@ onMounted(async () => {
     </div>
     <div class="mx-10 w-full max-w-[800px]">
       <div class="flex border-b-2 border-gray-200">
-        <p class="w-full text-xl text-white font-bold py-3">{{ currentMonitor.name || 'New' }}</p>
+        <p class="w-full text-xl text-white font-bold py-3">
+          {{ currentMonitor.name || "New" }}
+        </p>
       </div>
-      <MonitorEdit :monitor="currentMonitor" :protocols="protocols" @fetch-monitors="fetchMonitors"/>
+      <MonitorEdit
+        :monitor="currentMonitor"
+        :protocols="protocols"
+        @fetch-monitors="fetchMonitors"
+      />
     </div>
   </div>
 </template>

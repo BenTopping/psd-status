@@ -5,11 +5,11 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useAuthenticationStore();
-let username = ref("");
-let password = ref("");
+const username = ref("");
+const password = ref("");
 
 async function login() {
-  const { success, errors } = await store.login({
+  const { success } = await store.login({
     username: username.value,
     password: password.value,
   });
@@ -26,7 +26,10 @@ async function login() {
     <div class="flex bg-sdb-400 font-bold text-white rounded-t-lg py-5 w-full">
       <h1 class="mx-auto text-2xl">PSD Status</h1>
     </div>
-    <form class="flex flex-col p-5 mx-5 my-5 w-full gap-y-3" @submit.prevent="login()">
+    <form
+      class="flex flex-col p-5 mx-5 my-5 w-full gap-y-3"
+      @submit.prevent="login()"
+    >
       <div class="flex flex-col">
         <label class="px-3 text-gray-600">Username</label>
         <input

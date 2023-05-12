@@ -50,12 +50,12 @@ describe("Monitors page", () => {
     cy.intercept("/protocols", {
       fixture: "protocols_response.json",
     });
-    cy.intercept('/monitor', {
+    cy.intercept("/monitor", {
       statusCode: 200,
       body: {
-        message: 'Successful',
+        message: "Successful",
       },
-    })
+    });
 
     cy.visit("#/monitors");
     cy.get("[data-attribute=name-input]").type("NewMonitor");
@@ -84,17 +84,17 @@ describe("Monitors page", () => {
   it("Can update a monitor", () => {
     cy.intercept("/monitors", {
       fixture: "monitors_response.json",
-      times: 1
+      times: 1,
     });
     cy.intercept("/protocols", {
       fixture: "protocols_response.json",
     });
-    cy.intercept('/monitor', {
+    cy.intercept("/monitor", {
       statusCode: 200,
       body: {
-        message: 'Successful',
+        message: "Successful",
       },
-    })
+    });
 
     cy.visit("#/monitors");
     cy.get("[data-attribute=monitor-item]").first().click();
@@ -102,7 +102,7 @@ describe("Monitors page", () => {
 
     cy.intercept("/monitors", {
       fixture: "updated_monitors_response.json",
-      times: 1
+      times: 1,
     });
 
     cy.get("[data-action=submit-monitor]").click();

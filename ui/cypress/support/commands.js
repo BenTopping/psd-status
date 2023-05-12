@@ -25,8 +25,8 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 // Might be good to integrate this with an actual service login at some point
-import login_response from '../fixtures/login_response.json'
-Cypress.Commands.add('login', () => { 
-    // By setting this to local storage the router can read the user as logged in
-    window.localStorage.setItem('token', login_response.token)
-})
+import login_response from "../fixtures/login_response.json";
+Cypress.Commands.add("login", () => {
+  // By setting this to local storage the router can read the user as logged in
+  window.localStorage.setItem("token", login_response.token);
+});

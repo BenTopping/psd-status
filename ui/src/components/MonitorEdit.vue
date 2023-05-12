@@ -1,25 +1,25 @@
 <script setup>
-import { ref, computed, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 import { useAuthenticationStore } from "../stores/authStore.js";
 import { createMonitor } from "../api";
 
 const store = useAuthenticationStore();
 const props = defineProps({
   monitor: Object,
-  protocols: Array
+  protocols: Array,
 });
 
-const emit = defineEmits(['fetchMonitors'])
+const emit = defineEmits(["fetchMonitors"]);
 
 // This clones the monitor prop whilst also updating if the prop changes
 const currentMonitor = ref();
 watchEffect(() => (currentMonitor.value = { ...props.monitor }));
 
 async function createOrUpdateMonitor() {
-  const response = await createMonitor(currentMonitor.value, store.jwt)
+  await createMonitor(currentMonitor.value, store.jwt)
     .then((response) => {
       console.log(response);
-      emit('fetchMonitors')
+      emit("fetchMonitors");
       return response;
     })
     .catch((error) => {
@@ -63,7 +63,7 @@ async function createOrUpdateMonitor() {
           data-attribute="protocol-select"
           required
         >
-          <option 
+          <option
             v-for="protocol in protocols"
             :key="protocol.id"
             :value="protocol.id"

@@ -1,7 +1,9 @@
 <template>
   <div class="relative pt-3 pb-3 flex-shrink-0 bg-sdb-400">
     <div class="max-w-sm mx-auto px-4 sm:px-6">
-      <ul class="flex flex-row items-center justify-center my-2 text-xs text-gray-500 space-x-4">
+      <ul
+        class="flex flex-row items-center justify-center my-2 text-xs text-gray-500 space-x-4"
+      >
         <li>
           <div class="flex flex-row items-center justify-start gap-1">
             <svg

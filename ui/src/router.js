@@ -1,48 +1,48 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
-import NotFound from './views/NotFound.vue'
-import Monitors from './views/Monitors.vue'
-import { useAuthenticationStore } from './stores/authStore'
+import { createRouter, createWebHashHistory } from "vue-router";
+import HomeView from "./views/HomeView.vue";
+import LoginView from "./views/LoginView.vue";
+import NotFoundView from "./views/NotFoundView.vue";
+import MonitorsView from "./views/MonitorsView.vue";
+import { useAuthenticationStore } from "./stores/authStore";
 
 const routes = [
-    {
-        path: '/',
-        component: Home,
+  {
+    path: "/",
+    component: HomeView,
+  },
+  {
+    path: "/login",
+    component: LoginView,
+    beforeEnter(to, from, next) {
+      const store = useAuthenticationStore();
+      if (store.isAuthenticated) {
+        next("/");
+      } else {
+        next();
+      }
     },
-    {
-        path: '/login',
-        component: Login,
-        beforeEnter(to, from, next) {
-            const store = useAuthenticationStore()
-            if (store.isAuthenticated) {
-                next('/')
-            } else {
-                next()
-            }
-        }
+  },
+  {
+    path: "/monitors",
+    component: MonitorsView,
+    beforeEnter(to, from, next) {
+      const store = useAuthenticationStore();
+      if (!store.isAuthenticated) {
+        next("/login");
+      } else {
+        next();
+      }
     },
-    {
-        path: '/monitors',
-        component: Monitors,
-        beforeEnter(to, from, next) {
-            const store = useAuthenticationStore()
-            if (!store.isAuthenticated) {
-                next('/login')
-            } else {
-                next()
-            }
-        }
-    },
-    {
-        path: '/:pathMatch(.*)*',
-        component: NotFound
-    }
-]
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFoundView,
+  },
+];
 
 const router = createRouter({
-    history: createWebHashHistory(),
-    routes
-})
+  history: createWebHashHistory(),
+  routes,
+});
 
-export default router
+export default router;

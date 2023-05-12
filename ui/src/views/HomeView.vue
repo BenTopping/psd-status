@@ -3,9 +3,9 @@ import { getMonitors } from "../api/index.js";
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import MonitorCard from "../components/MonitorCard.vue";
 
-let monitors = ref([]);
-let lastUpdated = ref(new Date().toLocaleString());
-let pollInterval = null
+const monitors = ref([]);
+const lastUpdated = ref(new Date().toLocaleString());
+let pollInterval = null;
 
 const numOfRedSystems = computed(() => {
   return monitors.value?.filter((monitor) => monitor.current_state == "red")
@@ -40,11 +40,11 @@ function setupMonitorsPoll() {
 onMounted(() => {
   fetchMonitors();
   setupMonitorsPoll();
-})
+});
 
 onUnmounted(() => {
-  clearInterval(pollInterval)
-})
+  clearInterval(pollInterval);
+});
 </script>
 
 <template>

@@ -1,26 +1,26 @@
 <script setup>
 import { useAuthenticationStore } from "../stores/authStore.js";
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const store = useAuthenticationStore();
 
 const dropdown = {
   active: ref(false),
   close: () => {
-    dropdown.active.value = false
+    dropdown.active.value = false;
   },
   toggle: () => {
-    dropdown.active.value = !dropdown.active.value
-  }
-}
+    dropdown.active.value = !dropdown.active.value;
+  },
+};
 
 onBeforeUnmount(() => {
-  document.removeEventListener('click', dropdown.close)
-})
+  document.removeEventListener("click", dropdown.close);
+});
 
 onMounted(() => {
-  document.addEventListener('click', dropdown.close)
-})
+  document.addEventListener("click", dropdown.close);
+});
 </script>
 
 <template>
@@ -92,7 +92,10 @@ onMounted(() => {
                 <router-link
                   class="text-gray-700 block px-4 py-2 text-sm"
                   to="/"
-                  @click="store.logout(); dropdown.toggle()"
+                  @click="
+                    store.logout();
+                    dropdown.toggle();
+                  "
                 >
                   Logout
                 </router-link>
