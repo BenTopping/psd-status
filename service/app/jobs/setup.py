@@ -14,21 +14,25 @@ def context_http(monitor):
 
 def context_ssl():
     with scheduler.app.app_context():
-        monitors = Monitor.query.join(Protocol).filter(
-            Protocol.name == "https",
-        ).all()
+        monitors = (
+            Monitor.query.join(Protocol)
+            .filter(
+                Protocol.name == "https",
+            )
+            .all()
+        )
         for monitor in monitors:
             get_ssl(monitor)
 
 
 def setup_jobs():
     with scheduler.app.app_context():
-        monitors = Monitor.query.join(Protocol).filter(
-            or_(
-                Protocol.name == "http",
-                Protocol.name == "https"
-            )
-        ).options(joinedload(Monitor.protocol)).all()
+        monitors = (
+            Monitor.query.join(Protocol)
+            .filter(or_(Protocol.name == "http", Protocol.name == "https"))
+            .options(joinedload(Monitor.protocol))
+            .all()
+        )
 
         # Setup http and https jobs
         for monitor in monitors:
@@ -39,13 +43,13 @@ def setup_jobs():
                 trigger="interval",
                 seconds=monitor.delay,
             )
-        
+
         # Setup SSL job to run once a day (86400 seconds)
         scheduler.add_job(
-            id='ssl_job',
+            id="ssl_job",
             func=context_ssl,
             trigger="interval",
             seconds=86400,
         )
-    
+
     print("-> Succesfully started scheduled jobs!")

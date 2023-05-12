@@ -29,4 +29,11 @@ class SslRecord(db.Model):
         return new_ssl_record
 
     def as_dict(self):
-        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+        return {
+            "id": str(self.id),
+            "monitor_id": str(self.monitor_id),
+            "success": self.success,
+            "authority": self.authority,
+            "expiry_date": str(self.expiry_date),
+            "created_at": str(self.created_at),
+        }

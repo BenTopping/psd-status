@@ -33,7 +33,8 @@ def test_http_record_as_dict():
     http_record = HttpRecord(1, True, 200.0, 201, "There was an error").as_dict()
 
     assert http_record["monitor_id"] == "1"
-    assert http_record["success"] == "True"
+    assert http_record["success"] is True
     assert http_record["response_time"] == "200.0"
     assert http_record["status_code"] == "201"
     assert http_record["errors"] == "There was an error"
+    assert http_record["created_at"] is not None

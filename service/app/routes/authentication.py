@@ -5,6 +5,7 @@ from app.models.user import User
 
 bp = Blueprint("auth_routes", __name__)
 
+
 @bp.post("/login")
 def login():
     data = request.get_json()
@@ -22,4 +23,4 @@ def login():
         current_app.config["SECRET_KEY"],
         algorithm="HS256",
     )
-    return jsonify({"token": token })
+    return jsonify({"token": token})

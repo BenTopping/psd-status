@@ -37,6 +37,7 @@ def test_ssl_record_as_dict():
     ssl_record = SslRecord(1, True, "test authority", expiry_date).as_dict()
 
     assert ssl_record["monitor_id"] == "1"
-    assert ssl_record["success"] == "True"
+    assert ssl_record["success"] is True
     assert ssl_record["authority"] == "test authority"
     assert ssl_record["expiry_date"] == str(expiry_date)
+    assert ssl_record["created_at"] is not None

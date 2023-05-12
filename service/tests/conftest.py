@@ -9,6 +9,7 @@ class TestConfig(Config):
     TESTING = True
     SCHEDULER_RUN = False
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/psd_status_test"
+    SECRET_KEY = "testkey"
 
 
 @pytest.fixture
@@ -27,3 +28,8 @@ def mocked_responses():
     https://github.com/getsentry/responses#responses-as-a-pytest-fixture"""
     with responses.RequestsMock() as rsps:
         yield rsps
+
+
+@pytest.fixture
+def client(app):
+    return app.test_client()

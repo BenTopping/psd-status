@@ -23,3 +23,24 @@ def test_user_as_dict():
     user = User("testUsername", "testPassword").as_dict()
 
     assert user["username"] == "testUsername"
+
+
+def test_user_authenticate_success(app):
+    with app.app_context():
+        db_user = User.create("testUsername", "testPassword")
+
+        # Given the correct credentials the user should be returned
+        assert (
+            User.authenticate(username="testUsername", password="testPassword")
+            == db_user
+        )
+
+
+def test_user_authenticate_failure(app):
+    with app.app_context():
+        User.create("testUsername", "testPassword")
+
+        # Given bad credentials None should be returned
+        assert (
+            User.authenticate(username="testUsername", password="badPassword") is None
+        )

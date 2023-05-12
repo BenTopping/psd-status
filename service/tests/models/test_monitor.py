@@ -42,8 +42,9 @@ def test_monitor_as_dict():
     assert monitor["delay"] == "30"
     assert monitor["name"] == "Monitor1"
     assert monitor["target"] == "www.test.com"
-    assert monitor["active"] == "True"
-    assert monitor["current_state"] == "red"
+    assert monitor["active"] is True
+    assert monitor["updated_at"] is not None
+    assert monitor["created_at"] is not None
     assert monitor["average_uptime"] == "0"
 
 
@@ -89,3 +90,25 @@ def test_monitor_ssl_records(app):
             )
 
         assert monitor.ssl_records == expected_records
+
+
+def test_average_uptime_percentage(app):
+    with app.app_context():
+        protocol = Protocol.create("http")
+        monitor = Monitor.create(protocol.id, 30, "Monitor1", "www.test.com", True)
+        another_monitor = Monitor.create(
+            protocol.id, 60, "Monitor2", "www.test2.com", False
+        )
+
+        for _ in range(15):
+            # 15 Passing records
+            HttpRecord.create(monitor.id, True, 20, 200, "")
+            # 5 Failing records
+        for _ in range(5):
+            HttpRecord.create(monitor.id, False, 20, 200, "")
+        for _ in range(10):
+            # Create unrelated records
+            HttpRecord.create(another_monitor.id, True, 20, 200, "")
+
+        # 20 passing and 5 failed should be 75% average
+        assert monitor.average_uptime_percentage() == "75.0"

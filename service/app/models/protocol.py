@@ -23,7 +23,4 @@ class Protocol(db.Model):
         return new_protocol
 
     def as_dict(self):
-        return {
-            "id": self.id,
-            "name": self.name
-        }
+        return {"id": self.id, "name": self.name}

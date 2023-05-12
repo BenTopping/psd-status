@@ -33,4 +33,12 @@ class HttpRecord(db.Model):
         return new_http_record
 
     def as_dict(self):
-        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+        return {
+            "id": str(self.id),
+            "monitor_id": str(self.monitor_id),
+            "response_time": str(self.response_time),
+            "status_code": str(self.status_code),
+            "errors": self.errors,
+            "success": self.success,
+            "created_at": str(self.created_at),
+        }
