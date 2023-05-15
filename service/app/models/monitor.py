@@ -9,7 +9,11 @@ class Monitor(db.Model):
     http_records = db.relationship("HttpRecord", backref="monitor")
     ssl_records = db.relationship("SslRecord", backref="monitor")
     delay = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(128))
+    name = db.Column(
+        db.String(128),
+        nullable=False,
+        unique=True,
+    )
     target = db.Column(db.String(128))
     active = db.Column(db.Boolean)
     created_at = db.Column(db.TIMESTAMP, server_default=db.func.now())
@@ -33,6 +37,8 @@ class Monitor(db.Model):
         except Exception as e:
             db.session.rollback()
             print("! Error creating monitor: " + str(e))
+            raise e
+
         return new_monitor
 
     def as_dict(self):

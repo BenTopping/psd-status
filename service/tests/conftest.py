@@ -1,8 +1,11 @@
 import pytest
 import responses
+import jwt
+import datetime
 
 from app import create_app, db
 from app.config import Config
+from app.models.user import User
 
 
 class TestConfig(Config):
@@ -33,3 +36,18 @@ def mocked_responses():
 @pytest.fixture
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture
+def active_jwt(app):
+    with app.app_context():
+        user = User.create("mock-user", "mock-user")
+        return jwt.encode(
+            {
+                "sub": user.username,
+                "iat": datetime.datetime.utcnow(),
+                "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=30),
+            },
+            app.config["SECRET_KEY"],
+            algorithm="HS256",
+        )

@@ -41,7 +41,7 @@ async function createOrUpdateMonitor() {
       class="flex flex-col p-5 w-full gap-y-3"
       @submit.prevent="createOrUpdateMonitor()"
     >
-      <div v-if="!monitor.name" class="flex flex-col">
+      <div class="flex flex-col">
         <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
           >Name</label
         >
