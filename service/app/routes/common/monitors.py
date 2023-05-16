@@ -1,5 +1,6 @@
 from app.models.monitor import Monitor
 from app.extensions import db
+from app.jobs.setup import handle_http_job
 
 
 def handle_monitor(monitor):
@@ -11,17 +12,24 @@ def handle_monitor(monitor):
 
     if "id" not in monitor:
         try:
+            # Create monitor in db
             monitor = Monitor.create(**monitor)
+            # Create scheduler job
+            handle_http_job(monitor)
             return {"data": monitor.as_dict(), "status_code": 200}
         except Exception as e:
             print(e)
             return {"data": {"message": "Invalid data"}, "status_code": 400}
     else:
         try:
+            # Check monitor exists
             db_monitor = Monitor.query.filter_by(id=monitor["id"]).first()
             if db_monitor is not None:
+                # Update monitor in db
                 Monitor.query.filter_by(id=monitor["id"]).update(monitor)
                 db.session.commit()
+            # Update scheduler job
+            handle_http_job(db_monitor)
             return {"data": db_monitor.as_dict(), "status_code": 200}
         except Exception as e:
             print(e)
