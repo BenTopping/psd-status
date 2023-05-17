@@ -1,9 +1,11 @@
 <script setup>
 import { ref, watchEffect } from "vue";
 import { useAuthenticationStore } from "../stores/authStore.js";
+import { useAlertStore } from "../stores/alertStore.js"
 import { createMonitor } from "../api";
 
-const store = useAuthenticationStore();
+const authStore = useAuthenticationStore();
+const alertStore = useAlertStore();
 const props = defineProps({
   monitor: Object,
   protocols: Array,
@@ -16,15 +18,14 @@ const currentMonitor = ref();
 watchEffect(() => (currentMonitor.value = { ...props.monitor }));
 
 async function createOrUpdateMonitor() {
-  await createMonitor(currentMonitor.value, store.jwt)
+  await createMonitor(currentMonitor.value, authStore.jwt)
     .then((response) => {
-      console.log(response);
+      alertStore.addAlert('Successfully updated monitor', 'success')
       emit("fetchMonitors");
       return response;
     })
     .catch((error) => {
-      console.log("Error Authenticating: ", error);
-      return { success: false, error: error };
+      alertStore.addAlert(`Error updating monitor: ${error.response.data.message}`, 'danger')
     });
 }
 </script>

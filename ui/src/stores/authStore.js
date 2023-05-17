@@ -16,8 +16,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
         return { success: true, error: "" };
       })
       .catch((error) => {
-        console.log("Error Authenticating: ", error);
-        return { success: false, error: error };
+        return { success: false, error: error.response.data.message };
       });
   }
 
@@ -25,6 +24,7 @@ export const useAuthenticationStore = defineStore("authentication", () => {
     user.value = {};
     jwt.value = "";
     localStorage.token = "";
+    return { success: true, error: "" };
   }
 
   const isAuthenticated = computed(() => {

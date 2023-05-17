@@ -1,8 +1,10 @@
 <script setup>
 import { useAuthenticationStore } from "../stores/authStore.js";
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useAlertStore } from "../stores/alertStore.js";
 
-const store = useAuthenticationStore();
+const authStore = useAuthenticationStore();
+const alertStore = useAlertStore();
 
 const dropdown = {
   active: ref(false),
@@ -13,6 +15,12 @@ const dropdown = {
     dropdown.active.value = !dropdown.active.value;
   },
 };
+
+function handleLogout() {
+  authStore .logout();
+  dropdown.toggle();
+  alertStore.addAlert('Successfully logged out!', 'success')
+}
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", dropdown.close);
@@ -32,7 +40,7 @@ onMounted(() => {
         </div>
         <div>
           <router-link
-            v-if="!store.isAuthenticated"
+            v-if="!authStore.isAuthenticated"
             class="float-right text-sdb-100"
             to="/login"
           >
@@ -92,10 +100,7 @@ onMounted(() => {
                 <router-link
                   class="text-gray-700 block px-4 py-2 text-sm"
                   to="/"
-                  @click="
-                    store.logout();
-                    dropdown.toggle();
-                  "
+                  @click="handleLogout()"
                 >
                   Logout
                 </router-link>

@@ -24,6 +24,17 @@ def context_ssl():
 
 
 def handle_http_job(monitor):
+    with scheduler.app.app_context():
+        # We need to requery the monitor to check it exists and to load its protocol
+        monitor = (
+            Monitor.query.join(Protocol)
+            .filter(
+                Monitor.id == monitor.id,
+            )
+            .options(joinedload(Monitor.protocol))
+            .one()
+        )
+
     # If the job doesn't exist we want to create it
     if scheduler.get_job(str(monitor.id)) is None:
         if monitor.active is True:

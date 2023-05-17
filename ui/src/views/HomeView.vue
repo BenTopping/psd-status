@@ -69,7 +69,7 @@ onUnmounted(() => {
 
 <template>
   <div class="w-full min-h-screen items-center">
-    <div class="flex font-bold text-white py-20 w-full">
+    <div class="flex font-bold text-white py-16 w-full">
       <h1 class="mx-auto text-6xl">PSD Status</h1>
     </div>
     <div class="flex text-black w-full flex-col">
@@ -93,7 +93,7 @@ onUnmounted(() => {
         <p>Last updated: {{ lastUpdated }}</p>
       </div>
     </div>
-    <div class="flex flex-wrap p-10 mx-auto justify-center">
+    <div class="flex flex-wrap p-5 mx-auto justify-center">
       <div v-for="monitor in monitors" :key="monitor.id">
         <monitor-card :monitor="monitor" />
       </div>

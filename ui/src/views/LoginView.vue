@@ -1,20 +1,26 @@
 <script setup>
 import { useAuthenticationStore } from "../stores/authStore.js";
+import { useAlertStore } from "../stores/alertStore.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const store = useAuthenticationStore();
+const authStore = useAuthenticationStore();
+const alertStore = useAlertStore();
 const username = ref("");
 const password = ref("");
 
 async function login() {
-  const { success } = await store.login({
+  const { success, error } = await authStore.login({
     username: username.value,
     password: password.value,
   });
   if (success) {
     router.push({ path: "/", replace: true });
+    alertStore.clearAlerts()
+    alertStore.addAlert("Successfully logged in!", 'success')
+  } else {
+    alertStore.addAlert(`Error logging in: ${error}`, 'danger')
   }
 }
 </script>
