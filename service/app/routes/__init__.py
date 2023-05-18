@@ -4,6 +4,7 @@ import jwt
 from app.models.user import User
 
 
+# This method can be used to wrap a blueprint to add a request check for a valid jwt
 def token_required(f):
     @wraps(f)
     def _verify(*args, **kwargs):
@@ -23,10 +24,12 @@ def token_required(f):
 
         try:
             token = auth_headers[1]
+            # Decode our token to check its valid
             data = jwt.decode(
                 token, current_app.config["SECRET_KEY"], algorithms=["HS256"]
             )
             user = User.query.filter_by(username=data["sub"]).first()
+            # If the token user doesn't exist there has been an error
             if not user:
                 raise RuntimeError("User not found")
             return f(user, *args, **kwargs)

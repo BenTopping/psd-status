@@ -1,6 +1,7 @@
 from app.models.monitor import Monitor
 from app.models.protocol import Protocol
 from app.routes.monitors import monitor_dict
+from unittest.mock import patch
 
 
 def test_get_monitors_endpoint_success(app, client):
@@ -24,29 +25,36 @@ def test_get_monitors_endpoint_success(app, client):
 
 def test_update_monitor_endpoint_success(app, client, active_jwt):
     with app.app_context():
-        # Setup existing data
-        protocol = Protocol.create("http")
-        monitor = Monitor.create(protocol.id, 30, "Monitor", "www.monitor.com", True)
+        # We need to mock this method because it handles the scheduled jobs
+        with patch(
+            "app.routes.common.monitors.handle_http_job", return_value=""
+        ) as mock_handle_http_job:
+            # Setup existing data
+            protocol = Protocol.create("http")
+            monitor = Monitor.create(
+                protocol.id, 30, "Monitor", "www.monitor.com", True
+            )
 
-        # Post a monitor with valid changes
-        response = client.post(
-            "/v1/monitor",
-            json={
-                "id": str(monitor.id),
-                "protocol_id": str(monitor.protocol_id),
-                # Empty name causes failure
-                "name": "New name",
-                "target": monitor.target,
-                "delay": "30",
-                "active": True,
-            },
-            headers={"Authorization": f"Bearer {active_jwt}"},
-        )
-        assert response.status_code == 200
-        # Check some of the returned details to check they are accurate
-        # TODO We should be checking the full object here
-        assert response.json["id"] == str(monitor.id)
-        assert response.json["name"] == "New name"
+            # Post a monitor with valid changes
+            response = client.post(
+                "/v1/monitor",
+                json={
+                    "id": str(monitor.id),
+                    "protocol_id": str(monitor.protocol_id),
+                    # Empty name causes failure
+                    "name": "New name",
+                    "target": monitor.target,
+                    "delay": "30",
+                    "active": True,
+                },
+                headers={"Authorization": f"Bearer {active_jwt}"},
+            )
+            mock_handle_http_job.assert_called_once_with(monitor)
+            assert response.status_code == 200
+            # Check some of the returned details to check they are accurate
+            # TODO We should be checking the full object here
+            assert response.json["id"] == str(monitor.id)
+            assert response.json["name"] == "New name"
 
 
 def test_update_monitor_endpoint_unauthenticated(app, client):
@@ -103,26 +111,31 @@ def test_update_monitor_endpoint_failure(app, client, active_jwt):
 
 def test_create_monitor_endpoint_success(app, client, active_jwt):
     with app.app_context():
-        # Setup existing data
-        protocol = Protocol.create("http")
+        # We need to mock this method because it handles the scheduled jobs
+        with patch(
+            "app.routes.common.monitors.handle_http_job", return_value=""
+        ) as mock_handle_http_job:
+            # Setup existing data
+            protocol = Protocol.create("http")
 
-        # Post a monitor with valid changes
-        response = client.post(
-            "/v1/monitor",
-            json={
-                "protocol_id": str(protocol.id),
-                "name": "New monitor",
-                "target": "www.newTarget.com",
-                "delay": "30",
-                "active": True,
-            },
-            headers={"Authorization": f"Bearer {active_jwt}"},
-        )
-        assert response.status_code == 200
-        # Check some of the returned details to check they are accurate
-        # TODO We should be checking the full object here
-        assert response.json["id"] is not None
-        assert response.json["name"] == "New monitor"
+            # Post a monitor with valid changes
+            response = client.post(
+                "/v1/monitor",
+                json={
+                    "protocol_id": str(protocol.id),
+                    "name": "New monitor",
+                    "target": "www.newTarget.com",
+                    "delay": "30",
+                    "active": True,
+                },
+                headers={"Authorization": f"Bearer {active_jwt}"},
+            )
+            mock_handle_http_job.assert_called_once()
+            assert response.status_code == 200
+            # Check some of the returned details to check they are accurate
+            # TODO We should be checking the full object here
+            assert response.json["id"] is not None
+            assert response.json["name"] == "New monitor"
 
 
 def test_create_monitor_endpoint_failure(app, client, active_jwt):

@@ -7,6 +7,7 @@ def handle_monitor(monitor):
     try:
         monitor = format_monitor(monitor)
     except Exception as e:
+        print(e)
         return {"data": {"message": "Invalid data"}, "status_code": 400}
 
     if "id" not in monitor:
@@ -17,6 +18,7 @@ def handle_monitor(monitor):
             handle_http_job(monitor)
             return {"data": monitor.as_dict(), "status_code": 200}
         except Exception as e:
+            print(e)
             return {"data": {"message": "Invalid data"}, "status_code": 400}
     else:
         try:
@@ -30,10 +32,12 @@ def handle_monitor(monitor):
             handle_http_job(db_monitor)
             return {"data": db_monitor.as_dict(), "status_code": 200}
         except Exception as e:
+            print(e)
             return {"data": {"message": "Invalid data"}, "status_code": 400}
 
 
 def format_monitor(monitor):
+    # TODO add validation here so we don't rely on database validation
     try:
         formatted_monitor = {
             "protocol_id": monitor["protocol_id"],

@@ -26,6 +26,7 @@ def context_ssl():
 def handle_http_job(monitor):
     with scheduler.app.app_context():
         # We need to requery the monitor to check it exists and to load its protocol
+        # TODO there is probably a nice way of joining protocol to the existing object
         monitor = (
             Monitor.query.join(Protocol)
             .filter(

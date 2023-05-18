@@ -55,6 +55,7 @@ class Monitor(db.Model):
         }
 
     def average_uptime_percentage(self):
+        # If a monitor has http records grab the successful ones and divide that by total ones
         if len(self.http_records) > 0:
             success_records = len(
                 list(

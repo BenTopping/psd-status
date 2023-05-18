@@ -24,12 +24,14 @@ def create_app(config_class=Config):
 
 
 def setup_routes(app):
+    # Register the imported blueprints
     app.register_blueprint(authentication.bp, url_prefix="/v1")
     app.register_blueprint(monitors.bp, url_prefix="/v1")
     app.register_blueprint(protocol.bp, url_prefix="/v1")
 
 
 def setup_schedulers(app):
+    # Setup the scheduler and its jobs
     scheduler.init_app(app)
     scheduler.start()
     setup_jobs()

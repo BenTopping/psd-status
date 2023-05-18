@@ -6,7 +6,3 @@ class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SCHEDULER_RUN = True
-
-
-class DummyConfig(Config):
-    SCHEDULER_RUN = False

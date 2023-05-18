@@ -19,9 +19,10 @@ def get_http(monitor: Monitor):
         r = requests.get(url)
         response_time = r.elapsed.total_seconds()
         status_code = r.status_code
+        # This raises an error if the status is non-successful
         r.raise_for_status()
         success = True
-    # Would be nice to records the errors in a better way
+    # Would be nice to record the errors in a better way
     except requests.exceptions.HTTPError as errh:
         print(errh)
         errors = "HTTP Error"  # + str(errh)
