@@ -1,8 +1,10 @@
 <script setup>
-import { getMonitors } from "../api/index.js";
+import { getMonitors, getHttpRecords } from "../api/index.js";
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import MonitorCard from "../components/MonitorCard.vue";
+import { useAlertStore } from "../stores/alertStore";
 
+const alertStore = useAlertStore();
 const monitors = ref([]);
 const lastUpdated = ref(new Date().toLocaleString());
 let pollInterval = null;
@@ -20,7 +22,15 @@ const numOfYellowSystems = computed(() => {
     .length;
 });
 
-function formatMonitors(monitorData) {
+function formatMonitors(monitorData, httpRecordData) {
+  // Join http records and monitors together
+  monitorData.map((monitor) => {
+    monitor.http_records = httpRecordData.filter(
+      (record) => record.monitor_id == monitor.id
+    );
+  });
+  console.log(monitorData);
+  // Calculate monitors current state based on its http_records
   return monitorData.map((monitor) => {
     if (monitor.http_records.length > 0) {
       if (
@@ -45,24 +55,58 @@ function formatMonitors(monitorData) {
 }
 
 async function fetchMonitors() {
-  await getMonitors()
+  return await getMonitors()
     .then((response) => {
-      monitors.value = formatMonitors(response.data);
-      lastUpdated.value = new Date().toLocaleString();
+      return { success: true, response: response.data };
     })
     .catch((error) => {
-      console.log("Error retrieving monitors: ", error);
+      return { success: false, response: error.response.data };
     });
+}
+
+async function fetchHttpRecords(monitor_ids, limit) {
+  return await getHttpRecords(monitor_ids, limit)
+    .then((response) => {
+      return { success: true, response: response.data };
+    })
+    .catch((error) => {
+      return { success: false, response: error.response.data };
+    });
+}
+
+async function fetchData() {
+  await fetchMonitors().then(
+    async ({ success, response: monitor_response }) => {
+      if (success) {
+        const monitor_ids = monitor_response.map((monitor) => monitor.id);
+        await fetchHttpRecords(monitor_ids, 10).then(
+          ({ success, response: http_records_response }) => {
+            if (success) {
+              monitors.value = formatMonitors(
+                monitor_response,
+                http_records_response
+              );
+              lastUpdated.value = new Date().toLocaleString();
+            } else {
+              alertStore.addAlert(http_records_response.message, "danger");
+            }
+          }
+        );
+      } else {
+        alertStore.addAlert(monitor_response.message, "danger");
+      }
+    }
+  );
 }
 
 function setupMonitorsPoll() {
   pollInterval = setInterval(async () => {
-    fetchMonitors();
+    fetchData();
   }, 30 * 1000);
 }
 
 onMounted(() => {
-  fetchMonitors();
+  fetchData();
   setupMonitorsPoll();
 });
 

@@ -52,6 +52,7 @@ class Monitor(db.Model):
             "created_at": str(self.created_at),
             "updated_at": str(self.updated_at),
             "average_uptime": self.average_uptime_percentage(),
+            "ssl_expiry_date": self.ssl_expiry_date(),
         }
 
     def average_uptime_percentage(self):
@@ -70,3 +71,8 @@ class Monitor(db.Model):
             return str(round(100.0 * success_records / total_records, 2))
         else:
             return "0"
+
+    def ssl_expiry_date(self):
+        if len(self.ssl_records) > 0:
+            return self.ssl_records[-1].expiry_date
+        return ""

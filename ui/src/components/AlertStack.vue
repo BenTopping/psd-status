@@ -43,6 +43,7 @@ function calculateVariant(message) {
           alert
         )}`"
         role="alert"
+        data-attribute="alert"
       >
         <p class="flex w-full">{{ alert.message }}</p>
         <button

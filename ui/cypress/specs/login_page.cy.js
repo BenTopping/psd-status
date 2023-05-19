@@ -12,14 +12,10 @@ describe("Login page", () => {
   });
 
   it("does not login when given invalid data", () => {
-    cy.intercept("/login", {
+    cy.intercept("v1/login", {
       statusCode: 422,
       body: {
-        data: {
-          errors: {
-            error1: ["some error"],
-          },
-        },
+        message: "Invalid credentials",
       },
     });
     cy.visit("#/login");
@@ -30,14 +26,18 @@ describe("Login page", () => {
     cy.url().should("eq", "http://localhost:5173/#/login");
     // Admin navbar items should not be visible
     cy.get("[data-action=show-admin-dropdown]").should("not.exist");
+    // Should have an error message
+    cy.get("[data-attribute=alert]").contains(
+      "Error logging in: Invalid credentials"
+    );
   });
 
   it("Logins in correctly when given valid data", () => {
-    cy.intercept("/login", {
+    cy.intercept("v1/login", {
       fixture: "login_response.json",
     });
     // We want to intercept the monitor polls from the homepage
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "",
     });
     cy.visit("#/login");
@@ -48,5 +48,7 @@ describe("Login page", () => {
     cy.url().should("eq", "http://localhost:5173/#/");
     // Admin navbar items should be visible
     cy.get("[data-action=show-admin-dropdown]").should("be.visible");
+    // Should have a success message
+    cy.get("[data-attribute=alert]").contains("Successfully logged in!");
   });
 });

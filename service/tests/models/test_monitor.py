@@ -112,3 +112,35 @@ def test_average_uptime_percentage(app):
 
         # 20 passing and 5 failed should be 75% average
         assert monitor.average_uptime_percentage() == "75.0"
+
+
+def test_ssl_expiry_date(app):
+    with app.app_context():
+        protocol = Protocol.create("http")
+        monitor = Monitor.create(protocol.id, 30, "Monitor1", "www.test.com", True)
+        another_monitor = Monitor.create(
+            protocol.id, 60, "Monitor2", "www.test2.com", False
+        )
+        expiry_date = datetime.datetime.now()
+        expected_record = SslRecord(1, True, "test authority", expiry_date)
+        for _ in range(15):
+            # 15 normal records
+            SslRecord.create(monitor.id, True, "test authority", expiry_date)
+        for _ in range(5):
+            # Create unrelated records
+            SslRecord.create(another_monitor.id, True, "test authority", expiry_date)
+
+        # SSL expiry date method grabs the latest record so we expect it to be this one
+        expected_record = SslRecord.create(
+            monitor.id, True, "other authority", expiry_date
+        )
+
+        assert monitor.ssl_expiry_date() == expected_record.expiry_date
+
+
+def test_ssl_expiry_date_no_records(app):
+    with app.app_context():
+        protocol = Protocol.create("http")
+        monitor = Monitor.create(protocol.id, 30, "Monitor1", "www.test.com", True)
+
+        assert monitor.ssl_expiry_date() == ""

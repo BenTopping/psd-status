@@ -5,10 +5,10 @@ describe("Monitors page", () => {
   });
 
   it("Contains the correct elements", () => {
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "monitors_response.json",
     });
-    cy.intercept("/protocols", {
+    cy.intercept("v1/protocols", {
       fixture: "protocols_response.json",
     });
 
@@ -44,13 +44,13 @@ describe("Monitors page", () => {
   });
 
   it("Can create a new monitor", () => {
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "monitors_response.json",
     });
-    cy.intercept("/protocols", {
+    cy.intercept("v1/protocols", {
       fixture: "protocols_response.json",
     });
-    cy.intercept("/monitor", {
+    cy.intercept("v1/monitor", {
       statusCode: 200,
       body: {
         message: "Successful",
@@ -64,7 +64,7 @@ describe("Monitors page", () => {
     cy.get("[data-attribute=delay-select]").select("5m");
     cy.get("[data-attribute=active-select]").select("True");
 
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "updated_monitors_response.json",
     });
 
@@ -82,14 +82,14 @@ describe("Monitors page", () => {
   });
 
   it("Can update a monitor", () => {
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "monitors_response.json",
       times: 1,
     });
-    cy.intercept("/protocols", {
+    cy.intercept("v1/protocols", {
       fixture: "protocols_response.json",
     });
-    cy.intercept("/monitor", {
+    cy.intercept("v1/monitor", {
       statusCode: 200,
       body: {
         message: "Successful",
@@ -100,7 +100,7 @@ describe("Monitors page", () => {
     cy.get("[data-attribute=monitor-item]").first().click();
     cy.get("[data-attribute=protocol-select]").select("https");
 
-    cy.intercept("/monitors", {
+    cy.intercept("v1/monitors", {
       fixture: "updated_monitors_response.json",
       times: 1,
     });

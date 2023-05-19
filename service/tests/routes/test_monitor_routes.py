@@ -1,6 +1,5 @@
 from app.models.monitor import Monitor
 from app.models.protocol import Protocol
-from app.routes.monitors import monitor_dict
 from unittest.mock import patch
 
 
@@ -19,7 +18,7 @@ def test_get_monitors_endpoint_success(app, client):
         response = client.get("/v1/monitors")
         assert response.status_code == 200
         assert response.json == list(
-            map(lambda monitor: monitor_dict(monitor), expected_monitors)
+            map(lambda monitor: monitor.as_dict(), expected_monitors)
         )
 
 

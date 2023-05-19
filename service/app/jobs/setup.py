@@ -3,7 +3,6 @@ from app.models.protocol import Protocol
 from app.protocols.http import get_http
 from app.protocols.ssl import get_ssl
 from app.extensions import scheduler
-from sqlalchemy import or_
 from sqlalchemy.orm import joinedload
 
 
@@ -66,8 +65,8 @@ def setup_jobs():
         monitors = (
             Monitor.query.join(Protocol)
             .filter(
-                or_(Protocol.name == "http", Protocol.name == "https"),
-                Monitor.active is True,
+                (Protocol.name == "http") | (Protocol.name == "https"),
+                Monitor.active == True,  # noqa: E712
             )
             .options(joinedload(Monitor.protocol))
             .all()
