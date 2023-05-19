@@ -17,10 +17,10 @@ async function login() {
   });
   if (success) {
     router.push({ path: "/", replace: true });
-    alertStore.clearAlerts()
-    alertStore.addAlert("Successfully logged in!", 'success')
+    alertStore.clearAlerts();
+    alertStore.addAlert("Successfully logged in!", "success");
   } else {
-    alertStore.addAlert(`Error logging in: ${error}`, 'danger')
+    alertStore.addAlert(`Error logging in: ${error}`, "danger");
   }
 }
 </script>

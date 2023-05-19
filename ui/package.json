@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.vue,.cjs",
     "prettier": "npx prettier . --check",
-    "prettier:fix": "npm run prettier -- --write",
+    "prettier:fix": "npx prettier . --write",
     "test": "npm-run-all -p dev test:cypress:all",
     "test:open": "npm-run-all -p dev test:cypress:open",
     "test:cypress:open": "cypress open",

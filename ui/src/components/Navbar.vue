@@ -17,9 +17,9 @@ const dropdown = {
 };
 
 function handleLogout() {
-  authStore .logout();
+  authStore.logout();
   dropdown.toggle();
-  alertStore.addAlert('Successfully logged out!', 'success')
+  alertStore.addAlert("Successfully logged out!", "success");
 }
 
 onBeforeUnmount(() => {

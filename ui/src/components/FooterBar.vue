@@ -18,7 +18,7 @@
                 clipRule="evenodd"
               />
             </svg>
-            <span class="font-bold whitespace-nowrap"> PSD Status</span>
+            <span class="font-bold whitespace-nowrap">PSD Status</span>
           </div>
         </li>
         <li>

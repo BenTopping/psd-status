@@ -1,5 +1,6 @@
 import { Buffer } from "buffer";
 
+// A function to test the validity of a jwt
 export function isValidJwt(jwt) {
   if (!jwt || jwt.split(".").length < 3) {
     return false;

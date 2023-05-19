@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import { authenticate } from "../api";
 import { isValidJwt } from "../utils";
 
+// A store to handle user sessions
 export const useAuthenticationStore = defineStore("authentication", () => {
   const user = ref({});
   const jwt = ref("");
