@@ -74,6 +74,9 @@ by the `python-dotenv` library when the app is run. Here you can specify the dat
 
        flask run
 
+`Note:` The default login is admin/admin
+
+
 ### Testing
 
 #### Testing Requirements
