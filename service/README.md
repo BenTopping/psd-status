@@ -101,6 +101,7 @@ The service has the following routes:
 | monitors                             | GET             | `/monitors`                                     |
 | monitor                              | POST            | `/monitor`                                      |
 | protocols                            | GET             | `/protocols`                                    |
+| http_records                         | GET             | `/http_records?monitor_ids="1,2,3"`             |
 
 ## Scheduled Jobs
 

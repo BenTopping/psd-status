@@ -1,4 +1,7 @@
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 defineProps({
   monitor: Object,
 });
@@ -8,6 +11,7 @@ defineProps({
   <div
     class="flex flex-col w-96 h-64 bg-white p-3 m-5 rounded-lg drop-shadow-md"
     data-attribute="monitor-card"
+    @click="router.push(`monitor/${monitor.id}`)"
   >
     <span class="flex border-b-2 mb-5 p-2 w-full">
       <h2 class="text-lg w-full text-center font-semibold">

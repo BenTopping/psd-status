@@ -3,6 +3,7 @@ import HomeView from "./views/HomeView.vue";
 import LoginView from "./views/LoginView.vue";
 import NotFoundView from "./views/NotFoundView.vue";
 import MonitorsView from "./views/MonitorsView.vue";
+import MonitorDetailedView from "./views/MonitorDetailedView.vue";
 import { useAuthenticationStore } from "./stores/authStore";
 
 const routes = [
@@ -33,6 +34,10 @@ const routes = [
         next();
       }
     },
+  },
+  {
+    path: "/monitor/:id",
+    component: MonitorDetailedView
   },
   {
     path: "/:pathMatch(.*)*",
