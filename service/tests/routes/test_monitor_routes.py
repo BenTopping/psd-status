@@ -21,6 +21,32 @@ def test_get_monitors_endpoint_success(app, client):
             map(lambda monitor: monitor.as_dict(), expected_monitors)
         )
 
+def test_get_monitors_endpoint_with_ids_success(app, client):
+    with app.app_context():
+        expected_monitors = []
+        protocol = Protocol.create("http")
+        for i in range(5):
+            expected_monitors.append(
+                Monitor.create(
+                    protocol.id, 30, f"Monitor{i}", f"www.monitor-{i}.com", True
+                )
+            )
+
+        # Returns a list of all monitors
+        id = expected_monitors[0].id
+        response = client.get(f"/v1/monitors?ids={id}")
+        assert response.status_code == 200
+        assert response.json == [
+            expected_monitors[0].as_dict()
+        ]
+
+def test_get_monitors_endpoint_with_ids_failure(app, client):
+    with app.app_context():
+        response = client.get("/v1/monitors?ids=invalidId")
+        assert response.status_code == 400
+        assert response.json == {
+            "message": "Unable to find monitor with id invalidId"
+        }
 
 def test_update_monitor_endpoint_success(app, client, active_jwt):
     with app.app_context():

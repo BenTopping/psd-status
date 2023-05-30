@@ -29,7 +29,6 @@ function formatMonitors(monitorData, httpRecordData) {
       (record) => record.monitor_id == monitor.id
     );
   });
-  console.log(monitorData);
   // Calculate monitors current state based on its http_records
   return monitorData.map((monitor) => {
     if (monitor.http_records.length > 0) {

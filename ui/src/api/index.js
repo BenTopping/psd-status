@@ -7,12 +7,16 @@ export function authenticate(userData) {
   );
 }
 
-export function getMonitors() {
-  return axios.get(`${import.meta.env.VITE_PSD_STATUS_BASE_URL}/v1/monitors`);
+export function getMonitors(ids = []) {
+  const query_string = ids.length ? `?ids=${ids}` : "";
+  return axios.get(
+    `${import.meta.env.VITE_PSD_STATUS_BASE_URL}/v1/monitors` + query_string
+  );
 }
 
-export function getHttpRecords(monitor_ids, limit) {
-  const query_string = `?monitor_ids=${monitor_ids}&limit=${limit}`;
+export function getHttpRecords(monitor_ids = [], limit = "") {
+  let query_string = `?monitor_ids=${monitor_ids}`;
+  query_string = limit ? query_string + `&limit=${limit}` : query_string;
   return axios.get(
     `${import.meta.env.VITE_PSD_STATUS_BASE_URL}/v1/http_records` + query_string
   );

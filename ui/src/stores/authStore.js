@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { authenticate } from "../api";
-import { isValidJwt } from "../utils";
+import { isValidJwt } from "../utils/jwt";
 
 // A store to handle user sessions
 export const useAuthenticationStore = defineStore("authentication", () => {

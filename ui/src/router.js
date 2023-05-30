@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: "/monitor/:id",
-    component: MonitorDetailedView
+    component: MonitorDetailedView,
   },
   {
     path: "/:pathMatch(.*)*",
