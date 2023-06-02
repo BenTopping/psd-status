@@ -33,7 +33,7 @@ function fieldText(field) {
         <table
           v-bind="$attrs"
           class="w-full divide-y divide-gray-100 table-auto text-sm"
-          data-attribute="dataAttribute"
+          data-attribute="status-table"
           v-if="items.length !== 0"
         >
           <thead>

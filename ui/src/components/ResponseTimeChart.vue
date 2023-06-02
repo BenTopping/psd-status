@@ -27,6 +27,21 @@ function updateChart(ctx) {
         scales: {
           y: {
             beginAtZero: true,
+            ticks: {
+              color: "white",
+            },
+          },
+          x: {
+            ticks: {
+              color: "white",
+            },
+          },
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: "white",
+            },
           },
         },
       },
@@ -44,7 +59,7 @@ onMounted(() => {
   <div class="flex w-full">
     <div
       v-if="props.http_records?.length"
-      class="bg-white flex w-full rounded-lg"
+      class="flex w-full rounded-lg text-white"
     >
       <canvas id="response-time-chart" class="flex w-full"></canvas>
     </div>

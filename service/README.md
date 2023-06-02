@@ -27,7 +27,7 @@ A Flask Application and API to monitor information systems.
 The following tools are required for development:
 
 - python (use pyenv or something similar to install the python version specified in the `Pipfile`)
-- MySQL
+- MySQL (recommended 5.7, if using later versions you may need some schema tweaks)
 
 ### Getting Started
 

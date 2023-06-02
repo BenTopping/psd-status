@@ -3,6 +3,7 @@ import { getMonitors, getHttpRecords, getProtocols } from "../api/index.js";
 import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useAlertStore } from "../stores/alertStore.js";
+import { formatMonitors } from "../utils/monitors";
 import ResponseTimeChart from "../components/ResponseTimeChart.vue";
 import StatusTable from "../components/StatusTable.vue";
 
@@ -12,87 +13,38 @@ const monitor_id = computed(() => route.params.id);
 const monitor = ref({});
 const protocols = ref([]);
 
-// TODO: Extract all this common behaviour to an external file and consolidate
-function formatMonitors(monitorData, httpRecords) {
-  // Join http records and monitors together
-  monitorData.http_records = httpRecords;
-  // Calculate monitors current state based on its http_records
-  if (monitorData.http_records.length > 0) {
-    if (
-      monitorData.http_records[monitorData.http_records.length - 1].success ==
-      false
-    ) {
-      // Get last record and check if it failed
-      monitorData.current_state = "red";
-    } else if (
-      // Get last 10 records
-      monitorData.http_records
-        .slice(Math.max(monitorData.http_records.length - 10, 0))
-        .some((record) => record.success == false)
-    ) {
-      // Check if any of the records are failed
-      monitorData.current_state = "yellow";
-    } else {
-      monitorData.current_state = "green";
-    }
-  } else {
-    // If there are no records show gray
-    monitorData.current_state = "gray";
-  }
-  return monitorData;
-}
-
-async function fetchMonitor() {
-  return await getMonitors(monitor_id.value)
-    .then((response) => {
-      return { success: true, response: response.data };
-    })
-    .catch((error) => {
-      return { success: false, response: error.response.data };
-    });
-}
-
 async function fetchProtocols() {
-  await getProtocols()
-    .then((response) => {
-      protocols.value = response.data;
-    })
-    .catch((error) => {
-      console.log("Error retrieving protocols: ", error);
-    });
-}
-
-async function fetchHttpRecords(monitor_ids) {
-  return await getHttpRecords(monitor_ids)
-    .then((response) => {
-      return { success: true, response: response.data };
-    })
-    .catch((error) => {
-      return { success: false, response: error.response.data };
-    });
+  const { success, data } = await getProtocols();
+  if (success) {
+    protocols.value = data;
+  } else {
+    alertStore.addAlert(data.message, "danger");
+  }
 }
 
 async function fetchData() {
-  await fetchMonitor().then(async ({ success, response: monitor_response }) => {
-    if (success) {
-      // We are expecting a list of monitors but we want the first
-      monitor.value = monitor_response[0];
-      await fetchHttpRecords(monitor_id.value).then(
-        ({ success, response: http_records_response }) => {
-          if (success) {
-            monitor.value = formatMonitors(
-              monitor_response[0],
-              http_records_response
-            );
-          } else {
-            alertStore.addAlert(http_records_response.message, "danger");
+  await getMonitors(monitor_id.value).then(
+    async ({ success, data: monitor_data }) => {
+      if (success) {
+        // We are expecting a list of monitors but we want the first
+        monitor.value = monitor_data[0];
+        await getHttpRecords(monitor_id.value).then(
+          ({ success, data: http_records_data }) => {
+            if (success) {
+              monitor.value = formatMonitors(
+                monitor_data,
+                http_records_data
+              )[0];
+            } else {
+              alertStore.addAlert(http_records_data.message, "danger");
+            }
           }
-        }
-      );
-    } else {
-      alertStore.addAlert(monitor_response.message, "danger");
+        );
+      } else {
+        alertStore.addAlert(monitor_data.message, "danger");
+      }
     }
-  });
+  );
 }
 
 function getProtocolName(protocol_id) {
@@ -112,10 +64,12 @@ onMounted(async () => {
     <div class="items-center mx-16 my-10">
       <div
         class="flex border-b-2 border-gray-200 justify-center items-center pb-10"
+        data-attribute="monitor-header"
       >
         <div class="flex pr-20">
           <span
             :class="`w-64 h-64 rounded-full drop-shadow-md bg-${monitor.current_state}-400`"
+            data-attribute="monitor-status"
           ></span>
         </div>
         <div class="w-full">
@@ -168,7 +122,7 @@ onMounted(async () => {
         </div>
       </div>
       <div class="flex space-x-5">
-        <div class="flex w-full py-5 rounded-lg">
+        <div class="flex w-full py-5 rounded-lg items-center">
           <response-time-chart
             v-if="monitor.http_records?.length"
             :http_records="monitor.http_records"

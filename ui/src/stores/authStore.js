@@ -10,16 +10,13 @@ export const useAuthenticationStore = defineStore("authentication", () => {
 
   async function login(userData) {
     user.value = userData;
-    return authenticate(userData)
-      .then((response) => {
-        jwt.value = response.data.token;
-        localStorage.token = response.data.token;
-        return { success: true, error: "" };
-      })
-      .catch((error) => {
-        console.log(error);
-        return { success: false, error: error.response.data.message };
-      });
+    const { success, data } = await authenticate(userData);
+    if (success) {
+      jwt.value = data.token;
+      localStorage.token = data.token;
+      return { success: true, error: "" };
+    }
+    return { success: false, error: data.message };
   }
 
   function logout() {

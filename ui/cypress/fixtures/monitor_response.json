@@ -1,0 +1,15 @@
+[
+  {
+    "active": false,
+    "average_uptime": "100.0",
+    "created_at": "2023-05-06 21:48:34",
+    "current_state": "green",
+    "delay": "300",
+    "id": "1",
+    "name": "Google",
+    "protocol_id": "2",
+    "target": "google.com",
+    "updated_at": "0000-00-00 00:00:00",
+    "ssl_expiry_date": "Mon, 30 Oct 2023 20:25:16 GMT"
+  }
+]

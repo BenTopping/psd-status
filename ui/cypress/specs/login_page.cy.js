@@ -38,7 +38,7 @@ describe("Login page", () => {
     });
     // We want to intercept the monitor polls from the homepage
     cy.intercept("v1/monitors", {
-      fixture: "",
+      fixture: "monitors_response.json",
     });
     cy.visit("#/login");
     cy.get("[data-attribute=username-input]").type("test");

@@ -36,7 +36,7 @@ async function fetchProtocols() {
 
 onMounted(async () => {
   await fetchProtocols();
-  fetchMonitors();
+  await fetchMonitors();
 });
 </script>
 

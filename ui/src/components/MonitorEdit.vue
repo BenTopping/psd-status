@@ -18,18 +18,16 @@ const currentMonitor = ref();
 watchEffect(() => (currentMonitor.value = { ...props.monitor }));
 
 async function createOrUpdateMonitor() {
-  await createMonitor(currentMonitor.value, authStore.jwt)
-    .then((response) => {
-      alertStore.addAlert("Successfully updated monitor", "success");
-      emit("fetchMonitors");
-      return response;
-    })
-    .catch((error) => {
-      alertStore.addAlert(
-        `Error updating monitor: ${error.response.data.message}`,
-        "danger"
-      );
-    });
+  const { success, data } = await createMonitor(
+    currentMonitor.value,
+    authStore.jwt
+  );
+  if (success) {
+    alertStore.addAlert("Successfully updated monitor", "success");
+    emit("fetchMonitors");
+    return data;
+  }
+  alertStore.addAlert(`Error updating monitor: ${data.message}`, "danger");
 }
 </script>
 

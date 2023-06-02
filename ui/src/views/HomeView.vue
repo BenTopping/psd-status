@@ -3,6 +3,7 @@ import { getMonitors, getHttpRecords } from "../api/index.js";
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import MonitorCard from "../components/MonitorCard.vue";
 import { useAlertStore } from "../stores/alertStore";
+import { formatMonitors } from "../utils/monitors";
 
 const alertStore = useAlertStore();
 const monitors = ref([]);
@@ -22,80 +23,24 @@ const numOfYellowSystems = computed(() => {
     .length;
 });
 
-function formatMonitors(monitorData, httpRecordData) {
-  // Join http records and monitors together
-  monitorData.map((monitor) => {
-    monitor.http_records = httpRecordData.filter(
-      (record) => record.monitor_id == monitor.id
-    );
-  });
-  // Calculate monitors current state based on its http_records
-  return monitorData.map((monitor) => {
-    if (monitor.http_records.length > 0) {
-      if (
-        monitor.http_records[monitor.http_records.length - 1].success == false
-      ) {
-        // Get last record and check if it failed
-        monitor.current_state = "red";
-      } else if (
-        monitor.http_records.some((record) => record.success == false)
-      ) {
-        // Check if any of the records are failed
-        monitor.current_state = "yellow";
-      } else {
-        monitor.current_state = "green";
-      }
-    } else {
-      // If there are no records show gray
-      monitor.current_state = "gray";
-    }
-    return monitor;
-  });
-}
-
-async function fetchMonitors() {
-  return await getMonitors()
-    .then((response) => {
-      return { success: true, response: response.data };
-    })
-    .catch((error) => {
-      return { success: false, response: error.response.data };
-    });
-}
-
-async function fetchHttpRecords(monitor_ids, limit) {
-  return await getHttpRecords(monitor_ids, limit)
-    .then((response) => {
-      return { success: true, response: response.data };
-    })
-    .catch((error) => {
-      return { success: false, response: error.response.data };
-    });
-}
-
 async function fetchData() {
-  await fetchMonitors().then(
-    async ({ success, response: monitor_response }) => {
-      if (success) {
-        const monitor_ids = monitor_response.map((monitor) => monitor.id);
-        await fetchHttpRecords(monitor_ids, 10).then(
-          ({ success, response: http_records_response }) => {
-            if (success) {
-              monitors.value = formatMonitors(
-                monitor_response,
-                http_records_response
-              );
-              lastUpdated.value = new Date().toLocaleString();
-            } else {
-              alertStore.addAlert(http_records_response.message, "danger");
-            }
+  await getMonitors().then(async ({ success, data: monitor_data }) => {
+    if (success) {
+      const monitor_ids = monitor_data.map((monitor) => monitor.id);
+      await getHttpRecords(monitor_ids, 10).then(
+        ({ success, data: http_records_data }) => {
+          if (success) {
+            monitors.value = formatMonitors(monitor_data, http_records_data);
+            lastUpdated.value = new Date().toLocaleString();
+          } else {
+            alertStore.addAlert(http_records_data.message, "danger");
           }
-        );
-      } else {
-        alertStore.addAlert(monitor_response.message, "danger");
-      }
+        }
+      );
+    } else {
+      alertStore.addAlert(monitor_data.message, "danger");
     }
-  );
+  });
 }
 
 function setupMonitorsPoll() {
