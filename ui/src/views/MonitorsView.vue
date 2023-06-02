@@ -16,23 +16,21 @@ function getProtocolName(protocol_id) {
 }
 
 async function fetchMonitors() {
-  await getMonitors()
-    .then((response) => {
-      monitors.value = response.data;
-    })
-    .catch((error) => {
-      console.log("Error retrieving monitors: ", error);
-    });
+  const { success, data } = await getMonitors();
+  if (success) {
+    monitors.value = data;
+  } else {
+    console.log("Error retrieving protocols: ", data.message);
+  }
 }
 
 async function fetchProtocols() {
-  await getProtocols()
-    .then((response) => {
-      protocols.value = response.data;
-    })
-    .catch((error) => {
-      console.log("Error retrieving protocols: ", error);
-    });
+  const { success, data } = await getProtocols();
+  if (success) {
+    protocols.value = data;
+  } else {
+    console.log("Error retrieving protocols: ", data.message);
+  }
 }
 
 async function fetcher() {

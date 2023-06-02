@@ -7,7 +7,10 @@ export async function authenticate(userData) {
       return { success: true, data: response.data };
     })
     .catch((error) => {
-      return { success: false, data: error.response.data };
+      if (error.response) {
+        return { success: false, data: error.response.data };
+      }
+      return { success: false, data: error };
     });
 }
 
@@ -21,7 +24,10 @@ export async function getMonitors(ids = []) {
       return { success: true, data: response.data };
     })
     .catch((error) => {
-      return { success: false, data: error.response.data };
+      if (error.response) {
+        return { success: false, data: error.response.data };
+      }
+      return { success: false, data: error };
     });
 }
 
@@ -37,7 +43,10 @@ export async function getHttpRecords(monitor_ids = [], limit = "") {
       return { success: true, data: response.data };
     })
     .catch((error) => {
-      return { success: false, data: error.response.data };
+      if (error.response) {
+        return { success: false, data: error.response.data };
+      }
+      return { success: false, data: error };
     });
 }
 
@@ -48,7 +57,10 @@ export async function getProtocols() {
       return { success: true, data: response.data };
     })
     .catch((error) => {
-      return { success: false, data: error.response.data };
+      if (error.response) {
+        return { success: false, data: error.response.data };
+      }
+      return { success: false, data: error };
     });
 }
 
@@ -63,6 +75,9 @@ export async function createMonitor(monitorData, jwt) {
       return { success: true, data: response.data };
     })
     .catch((error) => {
-      return { success: false, data: error.response.data };
+      if (error.response) {
+        return { success: false, data: error.response.data };
+      }
+      return { success: false, data: error };
     });
 }

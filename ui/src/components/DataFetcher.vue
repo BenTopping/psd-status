@@ -1,7 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import { useAlertStore } from "../stores/alertStore";
-const alertStore = useAlertStore();
+
 const props = defineProps({
   fetcher: {
     type: Function,
@@ -15,13 +14,11 @@ const isError = ref(false);
 async function getData() {
   isLoading.value = true;
   isError.value = false;
-  const { success, error } = await props.fetcher();
+  const { success } = await props.fetcher();
   if (!success) {
     isError.value = true;
-    alertStore.addAlert(`Error updating monitor: ${error}`, "danger");
-  } else {
-    isLoading.value = false;
   }
+  isLoading.value = false;
 }
 
 onMounted(() => getData());
@@ -41,13 +38,13 @@ onMounted(() => getData());
     </div>
     <div
       v-else-if="isError"
-      class="flex flex-col w-full items-center justify-center"
+      class="flex flex-col w-full items-center justify-center min-h-screen text-white"
     >
       <p class="flex mb-5 mt-10 text-lg font-bold">
         There was an error retrieving the data
       </p>
       <button
-        class="mx-auto mt-5 w-32 bg-sdb-400 p-2 text-white rounded-lg text-base"
+        class="mx-auto mt-5 w-32 bg-sdb-400 p-2 rounded-lg text-base"
         data-action="login"
         @click="getData()"
       >
