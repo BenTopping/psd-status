@@ -36,7 +36,13 @@ onMounted(() => {
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex flex-row text-white items-center py-5 justify-between">
         <div class="flex gap-x-5">
-          <router-link to="/">Home</router-link>
+          <router-link to="/">
+            <img
+              class="w-8 h-8"
+              src="../assets/psd-status.svg"
+              alt="PSD Status logo"
+            />
+          </router-link>
         </div>
         <div>
           <router-link
@@ -82,13 +88,6 @@ onMounted(() => {
             >
               <div class="py-1 divide-y-2 divide-gray-300" role="none">
                 <div>
-                  <router-link
-                    class="text-gray-700 block px-4 py-2 text-sm"
-                    to="/random"
-                    @click="dropdown.toggle()"
-                  >
-                    Not found
-                  </router-link>
                   <router-link
                     class="text-gray-700 block px-4 py-2 text-sm"
                     to="/monitors"
