@@ -1,6 +1,6 @@
 describe("Home page", () => {
   it("Contains the correct elements", () => {
-    cy.intercept("v1/monitors", {
+    cy.intercept("v1/monitors?active=true", {
       fixture: "monitors_response.json",
     });
     cy.intercept("v1/http_records?monitor_ids=4,5,1&limit=10", {

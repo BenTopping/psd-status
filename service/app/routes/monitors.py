@@ -11,6 +11,8 @@ def monitors():
     args = request.args
     # The monitor ids to get the http records from
     monitor_ids = args.get("ids")
+    # Active filter (true/false)
+    active = args.get("active", type=bool)
     monitors = []
     if monitor_ids is not None:
         monitor_ids = monitor_ids.split(",")
@@ -18,12 +20,29 @@ def monitors():
             monitor = Monitor.query.filter(
                 Monitor.id == id,
             ).first()
+
             if monitor is None:
                 return jsonify({"message": f"Unable to find monitor with id {id}"}), 400
+
+            if active is not None and monitor.active != active:
+                return (
+                    jsonify(
+                        {
+                            "message": f"Unable to find monitor with id {id} and active state: {active}"
+                        }
+                    ),
+                    400,
+                )
+
             monitors.append(monitor)
     else:
         # If no ids are specified default to returning all
-        monitors = Monitor.query.all()
+        if active is not None:
+            print(active)
+            monitors = Monitor.query.filter(Monitor.active == active).all()
+        else:
+            monitors = Monitor.query.all()
+
     monitors_dict_records = list(map(lambda monitor: monitor.as_dict(), monitors))
 
     return jsonify(monitors_dict_records)

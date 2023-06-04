@@ -25,7 +25,7 @@ const numOfYellowSystems = computed(() => {
 });
 
 async function fetchData() {
-  const { success, data: monitor_data } = await getMonitors();
+  const { success, data: monitor_data } = await getMonitors(undefined, true);
   if (success) {
     const monitor_ids = monitor_data.map((monitor) => monitor.id);
     const { success, data: http_records_data } = await getHttpRecords(

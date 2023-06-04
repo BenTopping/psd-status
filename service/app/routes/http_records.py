@@ -33,7 +33,9 @@ def http_records():
         if limit is not None:
             # Gets last 'limit' number of records
             http_records.extend(
-                list(map(lambda x: x.as_dict(), monitor.http_records))[-int(limit):]
+                list(map(lambda x: x.as_dict(), monitor.http_records))[
+                    -int(limit) :
+                ]  # noqa: E203
             )
         else:
             http_records.extend(list(map(lambda x: x.as_dict(), monitor.http_records)))

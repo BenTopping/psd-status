@@ -14,8 +14,13 @@ export async function authenticate(userData) {
     });
 }
 
-export async function getMonitors(ids = []) {
-  const query_string = ids.length ? `?ids=${ids}` : "";
+export async function getMonitors(ids = [], active) {
+  let query_string = ids.length ? `?ids=${ids}` : "";
+  if (active) {
+    query_string = query_string.length
+      ? query_string + `&active=${active}`
+      : `?active=${active}`;
+  }
   return await axios
     .get(
       `${import.meta.env.VITE_PSD_STATUS_BASE_URL}/v1/monitors` + query_string

@@ -139,7 +139,7 @@ async function fetcher() {
               <h1 class="mx-auto text-2xl">Incidents</h1>
             </div>
             <div
-              class="flex w-full h-full bg-white rounded-b-lg overflow-y-scroll"
+              class="flex w-full h-full bg-white rounded-b-lg overflow-y-scroll max-h-[500px]"
             >
               <status-table
                 v-if="monitor.http_records?.length"
