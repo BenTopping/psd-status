@@ -61,7 +61,7 @@ by the `python-dotenv` library when the app is run. Here you can specify the dat
 
       pipenv shell
       
-      python3 ./dummmy_data.py
+      python3 ./dummy_data.py
 
 
 ### Running
