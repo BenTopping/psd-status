@@ -54,6 +54,15 @@ by the `python-dotenv` library when the app is run. Here you can specify the dat
       You may also want to create the default test schema at this point which can be done by running
       `CREATE DATABASE psd_status_test;`
 
+- Setup seed data:
+      To setup seed data (protocols and users) use the `seed_data.py` script
+      This can be achieved by running this from the service folder:
+
+      pipenv shell
+      
+      python3 ./seed_data.py
+
+
 - Setup dummy data:
 
       We recommend you setup dummy data using the `dummy_data.py` script

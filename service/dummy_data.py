@@ -22,15 +22,6 @@ class DummyConfig(Config):
 def insert_dummy_data():
     app = create_app(config_class=DummyConfig)
     with app.app_context():
-        # Generate users
-        print("-> Generating users")
-        User.create("admin", "admin")
-
-        # Generate protocols
-        print("-> Generating protocols")
-        Protocol.create("http")
-        Protocol.create("https")
-
         # Generate monitors
         # Would be nice to randomise the creation of these more thoroughly
         print("-> Generating monitors")

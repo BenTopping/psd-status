@@ -1,4 +1,5 @@
 CREATE DATABASE psd_status;
+USE psd_status;
 
 CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -18,8 +19,8 @@ CREATE TABLE monitor (
   name VARCHAR(128) UNIQUE NOT NULL,
   target VARCHAR(128) NOT NULL,
   active BOOLEAN NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT FK_monitor_protocol FOREIGN KEY (protocol_id) REFERENCES protocol (id)
 );
 
@@ -28,8 +29,8 @@ CREATE TABLE ssl_record (
   monitor_id INTEGER NOT NULL,/*FK*/
   success BOOLEAN NOT NULL,
   authority VARCHAR(128),
-  expiry_date TIMESTAMP,
-  created_at TIMESTAMP,
+  expiry_date TIMESTAMP DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT FK_ssl_record_monitor FOREIGN KEY (monitor_id) REFERENCES monitor (id)
 );
 
