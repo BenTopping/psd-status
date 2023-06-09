@@ -5,7 +5,9 @@ from app.config import Config
 
 
 class SeedConfig(Config):
+    TESTING = True
     SCHEDULER_RUN = False
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/psd_status"
 
 
 def insert_seed_data():
