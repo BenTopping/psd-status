@@ -30,7 +30,7 @@ defineProps({
           <p class="text-gray-500">
             {{
               monitor.http_records[monitor.http_records.length - 1]
-                ?.response_time
+                ?.response_time || 0
             }}s
           </p>
         </span>

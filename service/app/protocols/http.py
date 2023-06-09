@@ -1,6 +1,9 @@
 import requests
 from app.models.monitor import Monitor
 from app.models.http_record import HttpRecord
+import urllib3
+
+urllib3.disable_warnings()
 
 
 # Given a monitor object make a get http request and record
@@ -16,7 +19,7 @@ def get_http(monitor: Monitor):
     errors = ""
 
     try:
-        r = requests.get(url)
+        r = requests.get(url, verify=False)
         response_time = r.elapsed.total_seconds()
         status_code = r.status_code
         # This raises an error if the status is non-successful

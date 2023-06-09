@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify, request
-from app.models.http_record import HttpRecord
 from app.models.monitor import Monitor
-from sqlalchemy.orm import joinedload
 
 bp = Blueprint("http_record_routes", __name__)
 
@@ -20,22 +18,17 @@ def http_records():
     monitor_ids = monitor_ids.split(",")
     http_records = []
     for id in monitor_ids:
-        monitor = (
-            Monitor.query.join(HttpRecord)
-            .filter(
-                Monitor.id == id,
-            )
-            .options(joinedload(Monitor.http_records))
-            .first()
-        )
+        monitor = Monitor.query.filter(
+            Monitor.id == id,
+        ).first()
         if monitor is None:
             return jsonify({"message": f"Unable to find monitor with id {id}"}), 400
         if limit is not None:
             # Gets last 'limit' number of records
             http_records.extend(
                 list(map(lambda x: x.as_dict(), monitor.http_records))[
-                    -int(limit) :
-                ]  # noqa: E203
+                    -int(limit) :  # noqa: E203
+                ]
             )
         else:
             http_records.extend(list(map(lambda x: x.as_dict(), monitor.http_records)))

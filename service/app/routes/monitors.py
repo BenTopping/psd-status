@@ -38,7 +38,6 @@ def monitors():
     else:
         # If no ids are specified default to returning all
         if active is not None:
-            print(active)
             monitors = Monitor.query.filter(Monitor.active == active).all()
         else:
             monitors = Monitor.query.all()

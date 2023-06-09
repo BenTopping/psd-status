@@ -169,7 +169,7 @@ def test_update_monitor_endpoint_failure(app, client, active_jwt):
             headers={"Authorization": f"Bearer {active_jwt}"},
         )
         assert response.status_code == 400
-        assert response.json == {"message": "Invalid data"}
+        assert "Column \'name\' cannot be null" in response.json["message"]
 
 
 def test_create_monitor_endpoint_success(app, client, active_jwt):
@@ -221,4 +221,4 @@ def test_create_monitor_endpoint_failure(app, client, active_jwt):
             headers={"Authorization": f"Bearer {active_jwt}"},
         )
         assert response.status_code == 400
-        assert response.json == {"message": "Invalid data"}
+        assert "Duplicate entry 'New monitor' for key 'monitor.name'" in response.json["message"]

@@ -61,22 +61,22 @@ async function fetcher() {
             @click="currentMonitor = monitor"
           >
             <div
-              class="flex flex-row w-96 h-32 my-2 bg-white rounded-md drop-shadow-md"
+              class="flex flex-row h-32 my-2 bg-white rounded-md drop-shadow-md"
               data-attribute="monitor-item"
             >
               <div
                 class="flex w-1/3 bg-sdb-400 items-center rounded-l-md text-center"
               >
                 <span
-                  class="flex text-xl text-center text-white p-2 text-center font-bold bg-sdb-400"
+                  class="flex text-xl text-center text-white p-2 text-center font-bold"
                 >
                   {{ monitor.name }}
                 </span>
               </div>
-              <div class="flex flex-col p-3 w-2/3 justify-center">
+              <div class="flex flex-col p-3 w-2/3 justify-center w-96">
                 <span class="flex text-xl mx-auto space-x-5">
                   <p class="font-light">Target:</p>
-                  <p>{{ monitor.target }}</p>
+                  <p class="break-words max-w-[200px]">{{ monitor.target }}</p>
                 </span>
                 <span class="flex text-xl mx-auto space-x-5">
                   <p class="font-light">Protocol:</p>

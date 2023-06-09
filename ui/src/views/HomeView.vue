@@ -27,19 +27,26 @@ const numOfYellowSystems = computed(() => {
 async function fetchData() {
   const { success, data: monitor_data } = await getMonitors(undefined, true);
   if (success) {
-    const monitor_ids = monitor_data.map((monitor) => monitor.id);
-    const { success, data: http_records_data } = await getHttpRecords(
-      monitor_ids,
-      10
-    );
-    if (success) {
-      monitors.value = formatMonitors(monitor_data, http_records_data);
-      lastUpdated.value = new Date().toLocaleString();
-      return { success: true, error: "" };
-    } else {
-      alertStore.addAlert(http_records_data.message, "danger");
-      return { success: false, error: http_records_data.message };
+    if (monitor_data?.length) {
+      const monitor_ids = monitor_data.map((monitor) => monitor.id);
+      const { success, data: http_records_data } = await getHttpRecords(
+        monitor_ids,
+        10
+      );
+      if (success) {
+        monitors.value = formatMonitors(monitor_data, http_records_data);
+        lastUpdated.value = new Date().toLocaleString();
+        return { success: true, error: "" };
+      } else {
+        alertStore.addAlert(
+          `Unable to get records: ${http_records_data.message}`,
+          "danger"
+        );
+        return { success: true, error: http_records_data.message };
+      }
     }
+    monitors.value = formatMonitors(monitor_data, []);
+    return { success: true, error: "" };
   } else {
     alertStore.addAlert(monitor_data.message, "danger");
     return { success: false, error: monitor_data.message };
@@ -94,6 +101,9 @@ onUnmounted(() => {
       <div class="flex flex-wrap p-5 mx-auto justify-center">
         <div v-for="monitor in monitors" :key="monitor.id">
           <monitor-card :monitor="monitor" />
+        </div>
+        <div v-if="!monitors?.length" class="flex text-xl text-white py-10">
+          <h1>There are no monitors currently being tracked</h1>
         </div>
       </div>
     </div>

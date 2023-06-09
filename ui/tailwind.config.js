@@ -9,6 +9,7 @@ export default {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  safelist: ["bg-gray-400"],
   theme: {
     ...defaultOptions.theme,
     extend: {},

@@ -41,6 +41,6 @@ CREATE TABLE http_record (
   response_time FLOAT,
   status_code INTEGER,
   errors VARCHAR(1024),
-  created_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT FK_http_record_monitor FOREIGN KEY (monitor_id) REFERENCES monitor (id)
 );

@@ -1,6 +1,7 @@
 from app.models.monitor import Monitor
 from app.extensions import db
 from app.jobs.setup import handle_http_job
+from pymysql import MySQLError
 
 
 def handle_monitor(monitor):
@@ -17,9 +18,10 @@ def handle_monitor(monitor):
             # Create scheduler job
             handle_http_job(monitor)
             return {"data": monitor.as_dict(), "status_code": 200}
+        except MySQLError as e:
+            return {"data": {"message": e.args[0]}, "status_code": 400}
         except Exception as e:
-            print(e)
-            return {"data": {"message": "Invalid data"}, "status_code": 400}
+            return {"data": {"message": str(e)}, "status_code": 400}
     else:
         try:
             # Check monitor exists
@@ -31,9 +33,10 @@ def handle_monitor(monitor):
             # Update scheduler job
             handle_http_job(db_monitor)
             return {"data": db_monitor.as_dict(), "status_code": 200}
+        except MySQLError as e:
+            return {"data": {"message": e.args[0]}, "status_code": 400}
         except Exception as e:
-            print(e)
-            return {"data": {"message": "Invalid data"}, "status_code": 400}
+            return {"data": {"message": str(e)}, "status_code": 400}
 
 
 def format_monitor(monitor):

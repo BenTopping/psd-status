@@ -1,5 +1,4 @@
 from app import create_app
-from app.models.user import User
 from app.models.protocol import Protocol
 from app.models.monitor import Monitor
 from app.models.http_record import HttpRecord
