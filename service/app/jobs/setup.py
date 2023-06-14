@@ -81,7 +81,7 @@ def setup_jobs():
             id="ssl_job",
             func=context_ssl,
             trigger="interval",
-            seconds=10,
+            seconds=86400,
         )
 
     print("-> Succesfully started scheduled jobs!")
