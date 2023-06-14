@@ -15,7 +15,7 @@ def context_ssl():
     with scheduler.app.app_context():
         monitors = (
             Monitor.query.join(Protocol)
-            .filter(Protocol.name == "https", Monitor.active is True)
+            .filter(Protocol.name == "https", Monitor.active == True)  # noqa: E712
             .all()
         )
         for monitor in monitors:
@@ -81,7 +81,7 @@ def setup_jobs():
             id="ssl_job",
             func=context_ssl,
             trigger="interval",
-            seconds=86400,
+            seconds=10,
         )
 
     print("-> Succesfully started scheduled jobs!")
