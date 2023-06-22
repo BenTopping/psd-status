@@ -44,8 +44,11 @@ async function createOrUpdateMonitor() {
       @submit.prevent="createOrUpdateMonitor()"
     >
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+        <label class="text-sp px-3 mx-3 mt-3 border-b-2 border-sp font-bold"
           >Name</label
+        >
+        <label class="text-xs text-gray-700 font-light italic m-3"
+          >The name of the monitor</label
         >
         <input
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
@@ -56,8 +59,11 @@ async function createOrUpdateMonitor() {
         />
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+        <label class="text-sp px-3 mx-3 mt-3 border-b-2 border-sp font-bold"
           >Protocol</label
+        >
+        <label class="text-xs text-gray-700 font-light italic m-3"
+          >The protocol of the monitor target. e.g. http</label
         >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
@@ -75,8 +81,11 @@ async function createOrUpdateMonitor() {
         </select>
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+        <label class="text-sp px-3 mx-3 mt-3 border-b-2 border-sp font-bold"
           >Target</label
+        >
+        <label class="text-xs text-gray-700 font-light italic m-3"
+          >The target address to monitor</label
         >
         <input
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
@@ -87,8 +96,11 @@ async function createOrUpdateMonitor() {
         />
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+        <label class="text-sp px-3 mx-3 mt-3 border-b-2 border-sp font-bold"
           >Poll delay</label
+        >
+        <label class="text-xs text-gray-700 font-light italic m-3"
+          >The time between polling the monitor target</label
         >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"
@@ -106,8 +118,11 @@ async function createOrUpdateMonitor() {
         </select>
       </div>
       <div class="flex flex-col">
-        <label class="text-sp px-3 m-3 border-b-2 border-sp font-bold"
+        <label class="text-sp px-3 mx-3 mt-3 border-b-2 border-sp font-bold"
           >Active?</label
+        >
+        <label class="text-xs text-gray-700 font-light italic m-3"
+          >Whether the monitor is actively being polled</label
         >
         <select
           class="border-2 border-gray-300 rounded-lg p-2 text-black mx-3"

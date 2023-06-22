@@ -29,7 +29,7 @@ async function fetchData() {
       if (success) {
         // We are expecting a list of monitors but we want the first
         monitor.value = monitor_data[0];
-        await getHttpRecords(monitor_id.value).then(
+        await getHttpRecords(monitor_id.value, 100).then(
           ({ success, data: http_records_data }) => {
             if (success) {
               monitor.value = formatMonitors(
@@ -89,7 +89,7 @@ async function fetcher() {
                         monitor.http_records
                           ? monitor.http_records[
                               monitor.http_records.length - 1
-                            ].response_time
+                            ]?.response_time
                           : 0
                       }}s
                     </p>

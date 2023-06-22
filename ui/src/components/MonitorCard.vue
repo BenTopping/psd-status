@@ -9,7 +9,7 @@ defineProps({
 
 <template>
   <div
-    class="flex flex-col w-96 h-64 bg-white p-3 m-5 rounded-lg drop-shadow-md"
+    class="flex flex-col w-96 h-64 bg-white p-3 m-5 rounded-lg drop-shadow-md cursor-pointer"
     data-attribute="monitor-card"
     @click="router.push(`monitor/${monitor.id}`)"
   >

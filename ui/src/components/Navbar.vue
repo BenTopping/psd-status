@@ -37,11 +37,7 @@ onMounted(() => {
       <div class="flex flex-row text-white items-center py-5 justify-between">
         <div class="flex gap-x-5">
           <router-link to="/">
-            <img
-              class="w-8 h-8"
-              src="../assets/psd-status.svg"
-              alt="PSD Status logo"
-            />
+            <h1 class="text-xl font-bold cursor-pointer">PSD Status</h1>
           </router-link>
         </div>
         <div>
